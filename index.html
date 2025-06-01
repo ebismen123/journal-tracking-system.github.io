@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Tracking System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .deadline-warning {
+            background-color: #fee2e2;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { background-color: #fee2e2; }
+            50% { background-color: #fecaca; }
+            100% { background-color: #fee2e2; }
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Custom checkbox style */
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            vertical-align: middle;
+        }
+        
+        .custom-checkbox:checked {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        .custom-checkbox:checked::after {
+            content: '\2713';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Form Section -->
+            <div class="bg-white rounded-lg shadow-md p-6 flex-1">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-plus-circle text-blue-500 mr-2"></i> New Journal Entry
+                </h2>
+                <form id="journalForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="entryDate" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Artikel Masuk</label>
+                            <input type="date" id="entryDate" name="entryDate" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        
+                        <div>
+                            <label for="authorName" class="block text-sm font-medium text-gray-700 mb-1">Nama Penulis</label>
+                            <input type="text" id="authorName" name="authorName" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="affiliation" class="block text-sm font-medium text-gray-700 mb-1">Afiliasi</label>
+                        <input type="text" id="affiliation" name="affiliation" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul Artikel</label>
+                        <textarea id="title" name="title" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1">Nomor HP</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-500">+62</span>
+                                </div>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" class="pl-12 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="81234567890" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="targetJournal" class="block text-sm font-medium text-gray-700 mb-1">Jurnal yang Dituju</label>
+                            <select id="targetJournal" name="targetJournal" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Jurnal</option>
+                                <option value="EBISMEN">EBISMEN</option>
+                                <option value="WAWASAN">WAWASAN</option>
+                                <option value="PROFIT">PROFIT</option>
+                                <option value="POPULER">POPULER</option>
+                                <option value="SIDU">SIDU</option>
+                                <option value="INSDU">INSDU</option>
+                                <option value="OCEAN">OCEAN</option>
+                                <option value="KTI">KTI</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="deadline" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Deadline</label>
+                            <input type="date" id="deadline" name="deadline" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        
+                        <div>
+                            <label for="process" class="block text-sm font-medium text-gray-700 mb-1">Proses</label>
+                            <select id="process" name="process" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="Belum submit">Belum submit</option>
+                                <option value="Sudah disubmit">Sudah disubmit</option>
+                                <option value="Review">Review</option>
+                                <option value="Editing">Editing</option>
+                                <option value="Publish">Publish</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status Pembayaran</label>
+                        <div class="flex items-center space-x-6">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="payment" value="Sudah Bayar" class="h-4 w-4 text-blue-600 focus:ring-blue-500" checked>
+                                <span class="ml-2 text-gray-700">Sudah Bayar</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="payment" value="Belum Bayar" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-gray-700">Belum Bayar</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                            <i class="fas fa-save mr-2"></i>Simpan Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Report Section -->
+            <div class="bg-white rounded-lg shadow-md p-6 flex-1">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-list-alt text-blue-500 mr-2"></i> Journal Tracking Report
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <button id="refreshBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-1 px-3 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out">
+                            <i class="fas fa-sync-alt mr-1"></i>
+                            <span class="hidden md:inline">Refresh</span>
+                        </button>
+                        <div class="relative">
+                            <input type="text" id="searchInput" placeholder="Search..." class="pl-8 pr-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <i class="fas fa-search absolute left-2 top-2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto scrollbar-hide mb-4">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penulis</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jurnal</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="loading" class="text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
+                    <p class="mt-2 text-gray-600">Memuat data...</p>
+                </div>
+                
+                <div id="noData" class="text-center py-8 hidden">
+                    <i class="fas fa-inbox text-gray-400 text-3xl"></i>
+                    <p class="mt-2 text-gray-600">Tidak ada data yang ditemukan</p>
+                </div>
+                
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-sm text-gray-500" id="itemCount">Menampilkan 0 item</div>
+                    <div class="flex space-x-2">
+                        <button id="prevBtn" class="px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-700 disabled:opacity-50" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="nextBtn" class="px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-700 disabled:opacity-50" disabled>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Update Status</h3>
+                        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="editForm">
+                        <input type="hidden" id="editId" name="id">
+                        
+                        <div class="mb-4">
+                            <label for="editProcess" class="block text-sm font-medium text-gray-700 mb-1">Proses</label>
+                            <select id="editProcess" name="process" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="Belum submit">Belum submit</option>
+                                <option value="Sudah disubmit">Sudah disubmit</option>
+                                <option value="Review">Review</option>
+                                <option value="Editing">Editing</option>
+                                <option value="Publish">Publish</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status Pembayaran</label>
+                            <div class="flex items-center space-x-6">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="editPayment" value="Sudah Bayar" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-700">Sudah Bayar</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="editPayment" value="Belum Bayar" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-700">Belum Bayar</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="notifyAuthor" name="notifyAuthor" class="custom-checkbox">
+                            <label for="notifyAuthor" class="ml-2 text-sm text-gray-700">Kirim notifikasi via WhatsApp</label>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="saveEditBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-save mr-2"></i>Simpan
+                    </button>
+                    <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-times mr-2"></i>Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed bottom-4 right-4 hidden">
+        <div class="bg-green-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="toastMessage">Operasi berhasil!</span>
+        </div>
+    </div>
+
+    <script>
+        // Google Apps Script URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuC4dy-wgFo7gR1Y9xLenKuF7eXhRyxWVbDls_GmXCgkUswAHFoAOnio9RsluVuC-p/exec';
+        
+        // LoA Templates (replace with your actual template IDs)
+        const LOA_TEMPLATES = {
+            'EBISMEN': 'https://docs.google.com/document/d/1EBISMEN_TEMPLATE/edit',
+            'WAWASAN': 'https://docs.google.com/document/d/1WAWASAN_TEMPLATE/edit',
+            'PROFIT': 'https://docs.google.com/document/d/1PROFIT_TEMPLATE/edit',
+            'POPULER': 'https://docs.google.com/document/d/1POPULER_TEMPLATE/edit',
+            'SIDU': 'https://docs.google.com/document/d/1SIDU_TEMPLATE/edit',
+            'INSDU': 'https://docs.google.com/document/d/1INSDU_TEMPLATE/edit',
+            'OCEAN': 'https://docs.google.com/document/d/1OCEAN_TEMPLATE/edit',
+            'KTI': 'https://docs.google.com/document/d/1KTI_TEMPLATE/edit'
+        };
+        
+        // DOM Elements
+        const journalForm = document.getElementById('journalForm');
+        const reportBody = document.getElementById('reportBody');
+        const loading = document.getElementById('loading');
+        const noData = document.getElementById('noData');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const searchInput = document.getElementById('searchInput');
+        const editModal = document.getElementById('editModal');
+        const editForm = document.getElementById('editForm');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const itemCount = document.getElementById('itemCount');
+        const successToast = document.getElementById('successToast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        // Pagination variables
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let allData = [];
+        let filteredData = [];
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('entryDate').value = today;
+            
+            // Set deadline to 7 days from today
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            document.getElementById('deadline').value = nextWeek.toISOString().split('T')[0];
+            
+            // Load initial data
+            loadData();
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Form submission
+            journalForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveData();
+            });
+            
+            // Refresh button
+            refreshBtn.addEventListener('click', function() {
+                currentPage = 1;
+                loadData();
+            });
+            
+            // Search input
+            searchInput.addEventListener('input', function() {
+                currentPage = 1;
+                filterData();
+            });
+            
+            // Pagination buttons
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderData();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderData();
+                }
+            });
+            
+            // Save edit button
+            saveEditBtn.addEventListener('click', function() {
+                updateData();
+            });
+        }
+        
+        // Save data to Google Sheet
+        async function saveData() {
+  const formData = {
+    entryDate: document.getElementById('entryDate').value,
+    authorName: document.getElementById('authorName').value.trim(),
+    affiliation: document.getElementById('affiliation').value.trim(),
+    title: document.getElementById('title').value.trim(),
+    phoneNumber: '+62' + document.getElementById('phoneNumber').value.replace(/[^0-9]/g, ''),
+    targetJournal: document.getElementById('targetJournal').value,
+    deadline: document.getElementById('deadline').value,
+    process: document.getElementById('process').value,
+    payment: document.querySelector('input[name="payment"]:checked').value
+  };
+  
+console.log("Data yang dikirim:", formData);
+  
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      showToast('Data berhasil disimpan!');
+      journalForm.reset();
+      // Reset dates to defaults
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('entryDate').value = today;
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      document.getElementById('deadline').value = nextWeek.toISOString().split('T')[0];
+      
+      loadData();
+    } else {
+      throw new Error(result.message || 'Gagal menyimpan data');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showToast(error.message || 'Terjadi kesalahan saat menyimpan data', 'error');
+  }
+}
+        
+        // Load data from Google Sheet
+        async function loadData() {
+            loading.classList.remove('hidden');
+            noData.classList.add('hidden');
+            reportBody.innerHTML = '';
+            
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                // Process and store the data
+                allData = data.map(item => {
+                    // Convert timestamp to readable date if it exists
+                    const timestamp = item.Timestamp ? new Date(item.Timestamp) : new Date();
+                    
+                    return {
+                        id: item.ID || Utilities.getUuid(),
+                        timestamp: timestamp,
+                        entryDate: item['Tanggal Masuk'] || '',
+                        authorName: item['Nama Penulis'] || '',
+                        affiliation: item.Afiliasi || '',
+                        title: item['Judul Artikel'] || '',
+                        phoneNumber: item['Nomor HP'] || '',
+                        targetJournal: item['Jurnal Tujuan'] || '',
+                        deadline: item.Deadline || '',
+                        process: item.Proses || 'Belum submit',
+                        payment: item['Status Pembayaran'] || 'Belum Bayar'
+                    };
+                });
+                
+                // Sort by deadline (ascending)
+                allData.sort((a, b) => {
+                    const dateA = a.deadline ? new Date(a.deadline) : new Date(0);
+                    const dateB = b.deadline ? new Date(b.deadline) : new Date(0);
+                    return dateA - dateB;
+                });
+                
+                filterData();
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan saat memuat data', 'error');
+                noData.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+        
+        // Filter data based on search input
+        function filterData() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredData = [...allData];
+            } else {
+                filteredData = allData.filter(item => {
+                    return (
+                        item.authorName.toLowerCase().includes(searchTerm) ||
+                        item.title.toLowerCase().includes(searchTerm) ||
+                        item.targetJournal.toLowerCase().includes(searchTerm) ||
+                        item.affiliation.toLowerCase().includes(searchTerm)
+                    );
+                });
+            }
+            
+            renderData();
+        }
+        
+        // Render data to table with pagination
+        function renderData() {
+            reportBody.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                noData.classList.remove('hidden');
+                itemCount.textContent = 'Menampilkan 0 item';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                return;
+            }
+            
+            noData.classList.add('hidden');
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
+            const paginatedData = filteredData.slice(startIndex, endIndex);
+            
+            // Render each item
+            paginatedData.forEach(item => {
+                const row = document.createElement('tr');
+                
+                // Check if deadline is within 3 days
+                const deadline = item.deadline ? new Date(item.deadline) : null;
+                const today = new Date();
+                let daysDiff = null;
+                
+                if (deadline) {
+                    const timeDiff = deadline - today;
+                    daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                }
+                
+                // Apply deadline warning if within 3 days
+                if (daysDiff !== null && daysDiff <= 3 && daysDiff >= 0) {
+                    row.classList.add('deadline-warning');
+                } else if (daysDiff !== null && daysDiff < 0) {
+                    row.classList.add('bg-red-100');
+                }
+                
+                // Format dates for display
+                const formattedEntryDate = formatDate(item.entryDate);
+                const formattedDeadline = formatDate(item.deadline);
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${item.authorName}</div>
+                        <div class="text-xs text-gray-500">${item.affiliation}</div>
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="text-sm text-gray-900 font-medium">${item.title}</div>
+                        <div class="text-xs text-gray-500">${formattedEntryDate}</div>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            ${item.targetJournal}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm ${daysDiff !== null && daysDiff <= 3 ? 'text-red-600 font-bold' : 'text-gray-500'}">
+                        ${formattedDeadline}
+                        ${daysDiff !== null ? `<div class="text-xs ${daysDiff <= 3 ? 'text-red-500' : 'text-gray-400'}">${daysDiff} hari</div>` : ''}
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getProcessColor(item.process)}">
+                            ${item.process}
+                        </span>
+                        <span class="block mt-1 px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.payment === 'Sudah Bayar' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                            ${item.payment}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="openEditModal('${item.id}', '${item.process}', '${item.payment}')" class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <a href="https://wa.me/${item.phoneNumber.replace(/[^0-9]/g, '')}" target="_blank" class="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50" title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <button onclick="openLoA('${item.targetJournal}')" class="text-purple-600 hover:text-purple-900 p-1 rounded hover:bg-purple-50" title="Buat LoA">
+                                <i class="fas fa-file-signature"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                reportBody.appendChild(row);
+            });
+            
+            // Update pagination controls
+            updatePaginationControls();
+        }
+        
+        // Update pagination controls
+        function updatePaginationControls() {
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            
+            // Update item count display
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+            itemCount.textContent = `Menampilkan ${startItem}-${endItem} dari ${totalItems} item`;
+            
+            // Update button states
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+        }
+        
+        // Update data in Google Sheet
+        async function updateData() {
+            const formData = {
+                id: document.getElementById('editId').value,
+                process: document.getElementById('editProcess').value,
+                payment: document.querySelector('input[name="editPayment"]:checked').value,
+                notify: document.getElementById('notifyAuthor').checked
+            };
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ...formData,
+                        action: 'update'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Data berhasil diperbarui!');
+                    closeModal();
+                    loadData();
+                } else {
+                    throw new Error('Gagal memperbarui data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan saat memperbarui data', 'error');
+            }
+        }
+        
+        // Open edit modal
+        function openEditModal(id, process, payment) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editProcess').value = process;
+            
+            // Set radio button
+            const paymentRadios = document.getElementsByName('editPayment');
+            for (let radio of paymentRadios) {
+                if (radio.value === payment) {
+                    radio.checked = true;
+                    break;
+                }
+            }
+            
+            // Reset notification checkbox
+            document.getElementById('notifyAuthor').checked = false;
+            
+            editModal.classList.remove('hidden');
+        }
+        
+        // Close modal
+        function closeModal() {
+            editModal.classList.add('hidden');
+        }
+        
+        // Open LoA template
+        function openLoA(journal) {
+            const templateUrl = LOA_TEMPLATES[journal] || 'https://docs.google.com/document/d/';
+            window.open(templateUrl, '_blank');
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            
+            // Set background color based on type
+            if (type === 'error') {
+                successToast.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center';
+            } else {
+                successToast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center';
+            }
+            
+            successToast.classList.remove('hidden');
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                successToast.classList.add('hidden');
+            }, 3000);
+        }
+        
+        // Helper function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        // Helper function to get color based on process status
+        function getProcessColor(process) {
+            switch(process) {
+                case 'Sudah disubmit':
+                    return 'bg-blue-100 text-blue-800';
+                case 'Belum submit':
+                    return 'bg-gray-100 text-gray-800';
+                case 'Review':
+                    return 'bg-yellow-100 text-yellow-800';
+                case 'Editing':
+                    return 'bg-purple-100 text-purple-800';
+                case 'Publish':
+                    return 'bg-green-100 text-green-800';
+                default:
+                    return 'bg-gray-100 text-gray-800';
+            }
+        }
+    </script>
+</body>
+</html>
