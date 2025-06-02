@@ -468,12 +468,12 @@
             row.className = 'hover:bg-orange-50';
             row.dataset.id = key;
             
-            // Check if deadline is within 1 day
+            // Check if deadline is within 1 day and status is not "Publish"
             const today = new Date();
             const deadlineDate = new Date(journal.deadline);
             const timeDiff = deadlineDate.getTime() - today.getTime();
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            const isUrgent = daysDiff <= 1 && daysDiff >= 0;
+            const isUrgent = daysDiff <= 1 && daysDiff >= 0 && journal.process !== 'Publish';
             
             // Status badge
             let statusClass = '';
@@ -507,7 +507,7 @@
                         <span class="h-2 w-2 rounded-full bg-red-500 urgent"></span>
                     </div>
                 `;
-            } else if (daysDiff < 0) {
+            } else if (daysDiff < 0 && journal.process !== 'Publish') {
                 deadlineCell = `
                     <div class="flex items-center text-red-500">
                         <span class="mr-2">${journal.deadline}</span>
