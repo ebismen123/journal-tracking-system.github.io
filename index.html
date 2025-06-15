@@ -34,17 +34,17 @@
         }
     </style>
 </head>
-<body class="bg-orange-50 min-h-screen">
+<body class="min-h-screen" style="background-image: url('https://img.freepik.com/premium-vector/seamless-pattern-with-white-outline-oranges-fruit-citrus-orange-color-background_528213-749.jpg'); background-size: 500px; background-opacity: 0.1;">
     <!-- Header with Logo -->
     <header class="orange-gradient text-white py-4 px-6 shadow-lg">
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
             <div class="flex items-center mb-4 md:mb-0">
-                <i class="fas fa-book text-3xl mr-3"></i>
-                <h1 class="text-2xl md:text-3xl font-bold">Jeruk Manis ATS System</h1>
+                <img src="https://img.icons8.com/?size=100&id=XxRdzBNPGyUO&format=png&color=000000" alt="Orange" class="h-8 w-auto mr-3">
+                <h1 class="text-2xl md:text-3xl font-bold">Jeruk Manis</h1>
             </div>
             <div class="flex items-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/721/721098.png" alt="Orange" class="h-8 w-auto mr-3">
-                <p class="hidden md:block italic">Jeruk Manis Article Tracking System</p>
+                
+                <p class="hidden md:block italic">Article Tracking System</p>
             </div>
         </div>
     </header>
@@ -443,7 +443,7 @@
             alert('Data jurnal berhasil disimpan!');
         });
 
-        // Load data from Firebase
+        // Load data from Firebase with sorting
         journalsRef.on('value', (snapshot) => {
             journalList.innerHTML = '';
             const journals = snapshot.val();
@@ -455,9 +455,33 @@
             
             noData.classList.add('hidden');
             
-            Object.keys(journals).forEach(key => {
-                const journal = journals[key];
-                const row = createJournalRow(key, journal);
+            // Convert to array and sort
+            const journalsArray = Object.keys(journals).map(key => ({
+                id: key,
+                ...journals[key]
+            }));
+            
+            // Sort by:
+            // 1. Priority: Not published and not paid first
+            // 2. Then by closest deadline
+            journalsArray.sort((a, b) => {
+                // Priority for unfinished/pending items
+                const aPriority = (a.process !== 'Publish' || a.payment !== 'Sudah Bayar') ? 1 : 0;
+                const bPriority = (b.process !== 'Publish' || b.payment !== 'Sudah Bayar') ? 1 : 0;
+                
+                if (aPriority !== bPriority) {
+                    return bPriority - aPriority; // Higher priority first
+                }
+                
+                // Then sort by deadline (closest first)
+                const aDeadline = new Date(a.deadline).getTime();
+                const bDeadline = new Date(b.deadline).getTime();
+                return aDeadline - bDeadline;
+            });
+            
+            // Add rows in sorted order
+            journalsArray.forEach(journal => {
+                const row = createJournalRow(journal.id, journal);
                 journalList.appendChild(row);
             });
         });
@@ -465,7 +489,7 @@
         // Create journal row for table
         function createJournalRow(key, journal) {
             const row = document.createElement('tr');
-            row.className = 'hover:bg-orange-50';
+            row.className = 'hover:bg-orange-50 bg-white bg-opacity-90';
             row.dataset.id = key;
             
             // Check if deadline is within 1 day and status is not "Publish"
