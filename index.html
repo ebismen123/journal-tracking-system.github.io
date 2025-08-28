@@ -25,25 +25,24 @@
             color: transparent;
         }
         .urgent {
-            animation: pulse 2s infinite;
+            animation: pulse 1.5s infinite;
         }
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5); }
             70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
         }
     </style>
 </head>
-<body class="min-h-screen" style="background-image: url('https://img.freepik.com/premium-vector/seamless-pattern-with-white-outline-oranges-fruit-citrus-orange-color-background_528213-749.jpg'); background-size: 500px; background-opacity: 0.1;">
+<body class="min-h-screen bg-gray-50" style="background-image: url('https://img.freepik.com/premium-vector/seamless-pattern-with-white-outline-oranges-fruit-citrus-orange-color-background_528213-749.jpg'); background-size: 500px; background-repeat: repeat;">
     <!-- Header with Logo -->
-    <header class="orange-gradient text-white py-4 px-6 shadow-lg">
+    <header class="orange-gradient text-white py-4 px-6 shadow-lg sticky top-0 z-40">
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
             <div class="flex items-center mb-4 md:mb-0">
-                <img src="https://img.icons8.com/?size=100&id=XxRdzBNPGyUO&format=png&color=000000" alt="Orange" class="h-8 w-auto mr-3">
+                <img src="https://img.icons8.com/?size=100&id=XxRdzBNPGyUO&format=png&color=FFFFFF" alt="Orange" class="h-8 w-auto mr-3">
                 <h1 class="text-2xl md:text-3xl font-bold">Jeruk Manis</h1>
             </div>
             <div class="flex items-center">
-                
                 <p class="hidden md:block italic">Article Tracking System</p>
             </div>
         </div>
@@ -53,7 +52,7 @@
     <main class="container mx-auto py-8 px-4">
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Form Section -->
-            <section class="w-full lg:w-1/3 bg-white rounded-xl shadow-lg orange-border p-6">
+            <section class="w-full lg:w-1/3 bg-white rounded-xl shadow-lg orange-border p-6 h-fit">
                 <h2 class="text-2xl font-bold mb-6 orange-text-gradient">Journal Submission Form</h2>
                 
                 <form id="journalForm" class="space-y-4">
@@ -81,6 +80,14 @@
                         <label for="phone" class="block text-sm font-medium text-gray-700">No HP</label>
                         <input type="tel" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                     </div>
+
+                    <div>
+                        <label for="publicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
+                        <select id="publicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            <option value="Reguler">Reguler (8 Hari)</option>
+                            <option value="Fast Track">Fast Track (2 Hari)</option>
+                        </select>
+                    </div>
                     
                     <div>
                         <label for="journalTarget" class="block text-sm font-medium text-gray-700">Jurnal yang Dituju</label>
@@ -99,19 +106,19 @@
                     
                     <div>
                         <label for="deadline" class="block text-sm font-medium text-gray-700">Tanggal Deadline</label>
-                        <input type="date" id="deadline" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                        <input type="date" id="deadline" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border bg-gray-100" readonly>
                     </div>
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Proses</label>
                         <div class="mt-2 space-y-2">
                             <div class="flex items-center">
-                                <input id="submitted" name="process" type="radio" value="Sudah disubmit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                <label for="submitted" class="ml-2 block text-sm text-gray-700">Sudah disubmit</label>
-                            </div>
-                            <div class="flex items-center">
                                 <input id="notSubmitted" name="process" type="radio" value="Belum submit" checked class="h-4 w-4 text-orange-600 focus:ring-orange-500">
                                 <label for="notSubmitted" class="ml-2 block text-sm text-gray-700">Belum submit</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="submitted" name="process" type="radio" value="Sudah disubmit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                <label for="submitted" class="ml-2 block text-sm text-gray-700">Sudah disubmit</label>
                             </div>
                             <div class="flex items-center">
                                 <input id="review" name="process" type="radio" value="Review" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
@@ -120,6 +127,10 @@
                             <div class="flex items-center">
                                 <input id="editing" name="process" type="radio" value="Editing" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
                                 <label for="editing" class="ml-2 block text-sm text-gray-700">Editing</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="loaTerbit" name="process" type="radio" value="LoA sudah terbit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                <label for="loaTerbit" class="ml-2 block text-sm text-gray-700">LoA sudah terbit</label>
                             </div>
                             <div class="flex items-center">
                                 <input id="publish" name="process" type="radio" value="Publish" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
@@ -143,7 +154,7 @@
                     </div>
                     
                     <div class="pt-4">
-                        <button type="submit" class="w-full orange-gradient text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-medium">
+                        <button type="submit" class="w-full orange-gradient text-white py-2 px-4 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-medium transition-opacity">
                             <i class="fas fa-save mr-2"></i> Simpan Data
                         </button>
                     </div>
@@ -153,29 +164,58 @@
             <!-- Report Section -->
             <section class="w-full lg:w-2/3">
                 <div class="bg-white rounded-xl shadow-lg orange-border p-6">
-                    <div class="flex justify-between items-center mb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                         <h2 class="text-2xl font-bold orange-text-gradient">Journal Tracking Report</h2>
-                        <div class="flex items-center bg-orange-100 px-3 py-1 rounded-full">
+                        <div class="flex items-center bg-orange-100 px-3 py-1 rounded-full flex-shrink-0">
                             <i class="fas fa-chart-line text-orange-500 mr-2"></i>
                             <span class="text-sm font-medium text-orange-800">Live Data</span>
                         </div>
                     </div>
-                    
-                    <div class="mb-4">
-                        <div class="relative">
+
+                    <!-- Filters -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <div class="relative md:col-span-4">
                             <input type="text" id="searchInput" placeholder="Cari berdasarkan nama penulis atau judul..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
                         </div>
+                        
+                        <select id="filterType" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <option value="">Semua Jenis Publikasi</option>
+                            <option value="Reguler">Reguler</option>
+                            <option value="Fast Track">Fast Track</option>
+                        </select>
+                        <select id="filterJournal" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                             <option value="">Semua Jurnal</option>
+                            <option value="EBISMEN">EBISMEN</option>
+                            <option value="WAWASAN">WAWASAN</option>
+                            <option value="PROFIT">PROFIT</option>
+                            <option value="POPULER">POPULER</option>
+                            <option value="SIDU">SIDU</option>
+                            <option value="INSDU">INSDU</option>
+                            <option value="OCEAN">OCEAN</option>
+                            <option value="KTI">KTI</option>
+                        </select>
+                        <select id="filterStatus" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <option value="">Semua Status</option>
+                            <option value="Belum submit">Belum submit</option>
+                            <option value="Sudah disubmit">Sudah disubmit</option>
+                            <option value="Review">Review</option>
+                            <option value="Editing">Editing</option>
+                            <option value="LoA sudah terbit">LoA sudah terbit</option>
+                            <option value="Publish">Publish</option>
+                        </select>
+                        <button id="resetFilters" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 font-medium">Reset</button>
                     </div>
-                    
+
                     <div class="overflow-auto" style="max-height: 70vh;">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-orange-50 sticky top-0 z-10">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">Penulis</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">Judul</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">Jenis</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">Jurnal</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">Deadline</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-orange-800 uppercase tracking-wider">Status</th>
@@ -210,98 +250,109 @@
                     <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modalTitle">Edit Data Jurnal</h3>
                     <form id="editForm">
                         <input type="hidden" id="editId">
-                        <div class="mb-4">
-                            <label for="editEntryDate" class="block text-sm font-medium text-gray-700">Tanggal Artikel Masuk</label>
-                            <input type="date" id="editEntryDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editAuthorName" class="block text-sm font-medium text-gray-700">Nama Penulis</label>
-                            <input type="text" id="editAuthorName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editAffiliation" class="block text-sm font-medium text-gray-700">Afiliasi</label>
-                            <input type="text" id="editAffiliation" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editTitle" class="block text-sm font-medium text-gray-700">Judul Artikel</label>
-                            <textarea id="editTitle" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border"></textarea>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editPhone" class="block text-sm font-medium text-gray-700">No HP</label>
-                            <input type="tel" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editJournalTarget" class="block text-sm font-medium text-gray-700">Jurnal yang Dituju</label>
-                            <select id="editJournalTarget" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                                <option value="">Pilih Jurnal</option>
-                                <option value="EBISMEN">EBISMEN</option>
-                                <option value="WAWASAN">WAWASAN</option>
-                                <option value="PROFIT">PROFIT</option>
-                                <option value="POPULER">POPULER</option>
-                                <option value="SIDU">SIDU</option>
-                                <option value="INSDU">INSDU</option>
-                                <option value="OCEAN">OCEAN</option>
-                                <option value="KTI">KTI</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="editDeadline" class="block text-sm font-medium text-gray-700">Tanggal Deadline</label>
-                            <input type="date" id="editDeadline" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700">Proses</label>
-                            <div class="mt-2 space-y-2">
-                                <div class="flex items-center">
-                                    <input id="editSubmitted" name="editProcess" type="radio" value="Sudah disubmit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editSubmitted" class="ml-2 block text-sm text-gray-700">Sudah disubmit</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="editNotSubmitted" name="editProcess" type="radio" value="Belum submit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editNotSubmitted" class="ml-2 block text-sm text-gray-700">Belum submit</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="editReview" name="editProcess" type="radio" value="Review" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editReview" class="ml-2 block text-sm text-gray-700">Review</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="editEditing" name="editProcess" type="radio" value="Editing" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editEditing" class="ml-2 block text-sm text-gray-700">Editing</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="editPublish" name="editProcess" type="radio" value="Publish" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editPublish" class="ml-2 block text-sm text-gray-700">Publish</label>
+                        <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                            <div class="mb-4">
+                                <label for="editEntryDate" class="block text-sm font-medium text-gray-700">Tanggal Artikel Masuk</label>
+                                <input type="date" id="editEntryDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="editAuthorName" class="block text-sm font-medium text-gray-700">Nama Penulis</label>
+                                <input type="text" id="editAuthorName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="editAffiliation" class="block text-sm font-medium text-gray-700">Afiliasi</label>
+                                <input type="text" id="editAffiliation" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="editTitle" class="block text-sm font-medium text-gray-700">Judul Artikel</label>
+                                <textarea id="editTitle" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="editPhone" class="block text-sm font-medium text-gray-700">No HP</label>
+                                <input type="tel" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="editPublicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
+                                <select id="editPublicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                    <option value="Reguler">Reguler (8 Hari)</option>
+                                    <option value="Fast Track">Fast Track (2 Hari)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="editJournalTarget" class="block text-sm font-medium text-gray-700">Jurnal yang Dituju</label>
+                                <select id="editJournalTarget" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                    <option value="">Pilih Jurnal</option>
+                                    <option value="EBISMEN">EBISMEN</option>
+                                    <option value="WAWASAN">WAWASAN</option>
+                                    <option value="PROFIT">PROFIT</option>
+                                    <option value="POPULER">POPULER</option>
+                                    <option value="SIDU">SIDU</option>
+                                    <option value="INSDU">INSDU</option>
+                                    <option value="OCEAN">OCEAN</option>
+                                    <option value="KTI">KTI</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="editDeadline" class="block text-sm font-medium text-gray-700">Tanggal Deadline</label>
+                                <input type="date" id="editDeadline" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border bg-gray-100" readonly>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Proses</label>
+                                <div class="mt-2 space-y-2">
+                                     <div class="flex items-center">
+                                        <input id="editNotSubmitted" name="editProcess" type="radio" value="Belum submit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editNotSubmitted" class="ml-2 block text-sm text-gray-700">Belum submit</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="editSubmitted" name="editProcess" type="radio" value="Sudah disubmit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editSubmitted" class="ml-2 block text-sm text-gray-700">Sudah disubmit</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="editReview" name="editProcess" type="radio" value="Review" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editReview" class="ml-2 block text-sm text-gray-700">Review</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="editEditing" name="editProcess" type="radio" value="Editing" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editEditing" class="ml-2 block text-sm text-gray-700">Editing</label>
+                                    </div>
+                                     <div class="flex items-center">
+                                        <input id="editLoaTerbit" name="editProcess" type="radio" value="LoA sudah terbit" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editLoaTerbit" class="ml-2 block text-sm text-gray-700">LoA sudah terbit</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="editPublish" name="editProcess" type="radio" value="Publish" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editPublish" class="ml-2 block text-sm text-gray-700">Publish</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700">Status Pembayaran</label>
-                            <div class="mt-2 space-y-2">
-                                <div class="flex items-center">
-                                    <input id="editPaid" name="editPayment" type="radio" value="Sudah Bayar" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editPaid" class="ml-2 block text-sm text-gray-700">Sudah Bayar</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="editNotPaid" name="editPayment" type="radio" value="Belum Bayar" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
-                                    <label for="editNotPaid" class="ml-2 block text-sm text-gray-700">Belum Bayar</label>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Status Pembayaran</label>
+                                <div class="mt-2 space-y-2">
+                                    <div class="flex items-center">
+                                        <input id="editPaid" name="editPayment" type="radio" value="Sudah Bayar" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editPaid" class="ml-2 block text-sm text-gray-700">Sudah Bayar</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="editNotPaid" name="editPayment" type="radio" value="Belum Bayar" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editNotPaid" class="ml-2 block text-sm text-gray-700">Belum Bayar</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="saveEdit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 orange-gradient text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <button type="button" id="saveEdit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 orange-gradient text-base font-medium text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm transition-opacity">
                         <i class="fas fa-save mr-2"></i> Simpan Perubahan
-                    </button>
-                    <button type="button" id="deleteJournal" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        <i class="fas fa-trash mr-2"></i> Hapus Data
                     </button>
                     <button type="button" id="cancelEdit" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         <i class="fas fa-times mr-2"></i> Batal
@@ -380,7 +431,7 @@
             authDomain: "orange-journal-tracker.firebaseapp.com",
             databaseURL: "https://orange-journal-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "orange-journal-tracker",
-            storageBucket: "orange-journal-tracker.firebasestorage.app",
+            storageBucket: "orange-journal-tracker.appspot.com",
             messagingSenderId: "430973783779",
             appId: "1:430973783779:web:bc1ccf3b75ce8144fcffd6"
         };
@@ -390,61 +441,89 @@
         const database = firebase.database();
         const journalsRef = database.ref('journals');
 
-        // DOM elements
+        // --- DOM Elements ---
         const journalForm = document.getElementById('journalForm');
         const journalList = document.getElementById('journalList');
         const noData = document.getElementById('noData');
         const searchInput = document.getElementById('searchInput');
         const editModal = document.getElementById('editModal');
-        const editForm = document.getElementById('editForm');
         const saveEdit = document.getElementById('saveEdit');
-        const deleteJournal = document.getElementById('deleteJournal');
         const cancelEdit = document.getElementById('cancelEdit');
         const editId = document.getElementById('editId');
         const confirmModal = document.getElementById('confirmModal');
         const confirmDelete = document.getElementById('confirmDelete');
         const cancelDelete = document.getElementById('cancelDelete');
+        
+        // Form elements for auto-deadline
+        const entryDateInput = document.getElementById('entryDate');
+        const publicationTypeInput = document.getElementById('publicationType');
+        const deadlineInput = document.getElementById('deadline');
+        const editEntryDateInput = document.getElementById('editEntryDate');
+        const editPublicationTypeInput = document.getElementById('editPublicationType');
+        const editDeadlineInput = document.getElementById('editDeadline');
+        
+        // Filter elements
+        const filterType = document.getElementById('filterType');
+        const filterJournal = document.getElementById('filterJournal');
+        const filterStatus = document.getElementById('filterStatus');
+        const resetFiltersBtn = document.getElementById('resetFilters');
 
-        // Form submission
-        journalForm.addEventListener('submit', (e) => {
+        // --- Functions ---
+
+        /**
+         * Updates the deadline date based on the entry date and publication type.
+         * @param {HTMLInputElement} entryDateElem - The entry date input element.
+         * @param {HTMLSelectElement} publicationTypeElem - The publication type select element.
+         * @param {HTMLInputElement} deadlineElem - The deadline input element to update.
+         */
+        function updateDeadline(entryDateElem, publicationTypeElem, deadlineElem) {
+            const entryDateValue = entryDateElem.value;
+            if (!entryDateValue) return;
+
+            const entryDate = new Date(entryDateValue);
+            const publicationType = publicationTypeElem.value;
+            const daysToAdd = publicationType === 'Fast Track' ? 2 : 8;
+            
+            entryDate.setDate(entryDate.getDate() + daysToAdd);
+            deadlineElem.value = entryDate.toISOString().split('T')[0];
+        }
+
+        /**
+         * Handles the main form submission.
+         * @param {Event} e - The form submission event.
+         */
+        function handleFormSubmit(e) {
             e.preventDefault();
             
-            const entryDate = document.getElementById('entryDate').value;
-            const authorName = document.getElementById('authorName').value;
-            const affiliation = document.getElementById('affiliation').value;
-            const title = document.getElementById('title').value;
-            const phone = document.getElementById('phone').value;
-            const journalTarget = document.getElementById('journalTarget').value;
-            const deadline = document.getElementById('deadline').value;
-            const process = document.querySelector('input[name="process"]:checked').value;
-            const payment = document.querySelector('input[name="payment"]:checked').value;
-            
-            // Save to Firebase
-            const newJournalRef = journalsRef.push();
-            newJournalRef.set({
-                entryDate,
-                authorName,
-                affiliation,
-                title,
-                phone,
-                journalTarget,
-                deadline,
-                process,
-                payment,
+            const newJournalData = {
+                entryDate: document.getElementById('entryDate').value,
+                authorName: document.getElementById('authorName').value,
+                affiliation: document.getElementById('affiliation').value,
+                title: document.getElementById('title').value,
+                phone: document.getElementById('phone').value,
+                publicationType: document.getElementById('publicationType').value,
+                journalTarget: document.getElementById('journalTarget').value,
+                deadline: document.getElementById('deadline').value,
+                process: document.querySelector('input[name="process"]:checked').value,
+                payment: document.querySelector('input[name="payment"]:checked').value,
                 createdAt: firebase.database.ServerValue.TIMESTAMP
-            });
+            };
             
-            // Reset form
+            journalsRef.push(newJournalData);
+            
             journalForm.reset();
             document.getElementById('notSubmitted').checked = true;
             document.getElementById('notPaid').checked = true;
+            initializeDateFields();
             
-            // Show success message
             alert('Data jurnal berhasil disimpan!');
-        });
+        }
 
-        // Load data from Firebase with sorting
-        journalsRef.on('value', (snapshot) => {
+        /**
+         * Renders the list of journals from Firebase data.
+         * @param {DataSnapshot} snapshot - The Firebase data snapshot.
+         */
+        function renderJournalList(snapshot) {
             journalList.innerHTML = '';
             const journals = snapshot.val();
             
@@ -455,89 +534,72 @@
             
             noData.classList.add('hidden');
             
-            // Convert to array and sort
             const journalsArray = Object.keys(journals).map(key => ({
                 id: key,
                 ...journals[key]
             }));
             
-            // Sort by:
-            // 1. Priority: Not published and not paid first
-            // 2. Then by closest deadline
+            // Sort by priority: unfinished items first, then by closest deadline
             journalsArray.sort((a, b) => {
-                // Priority for unfinished/pending items
-                const aPriority = (a.process !== 'Publish' || a.payment !== 'Sudah Bayar') ? 1 : 0;
-                const bPriority = (b.process !== 'Publish' || b.payment !== 'Sudah Bayar') ? 1 : 0;
-                
-                if (aPriority !== bPriority) {
-                    return bPriority - aPriority; // Higher priority first
-                }
-                
-                // Then sort by deadline (closest first)
+                const aIsDone = a.process === 'Publish';
+                const bIsDone = b.process === 'Publish';
+
+                if (aIsDone && !bIsDone) return 1;
+                if (!aIsDone && bIsDone) return -1;
+
                 const aDeadline = new Date(a.deadline).getTime();
                 const bDeadline = new Date(b.deadline).getTime();
                 return aDeadline - bDeadline;
             });
             
-            // Add rows in sorted order
             journalsArray.forEach(journal => {
                 const row = createJournalRow(journal.id, journal);
                 journalList.appendChild(row);
             });
-        });
+            applyFilters();
+        }
 
-        // Create journal row for table
+        /**
+         * Creates a table row element for a single journal entry.
+         * @param {string} key - The Firebase key for the journal.
+         * @param {object} journal - The journal data object.
+         * @returns {HTMLTableRowElement} The created table row.
+         */
         function createJournalRow(key, journal) {
             const row = document.createElement('tr');
-            row.className = 'hover:bg-orange-50 bg-white bg-opacity-90';
+            row.className = 'hover:bg-orange-50 bg-white bg-opacity-90 transition-colors';
             row.dataset.id = key;
-            
-            // Check if deadline is within 1 day and status is not "Publish"
+            row.dataset.author = journal.authorName.toLowerCase();
+            row.dataset.title = journal.title.toLowerCase();
+            row.dataset.type = journal.publicationType;
+            row.dataset.journal = journal.journalTarget;
+            row.dataset.status = journal.process;
+
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
             const deadlineDate = new Date(journal.deadline);
             const timeDiff = deadlineDate.getTime() - today.getTime();
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            const isUrgent = daysDiff <= 1 && daysDiff >= 0 && journal.process !== 'Publish';
+            const isUrgent = daysDiff <= 2 && daysDiff >= 0 && journal.process !== 'Publish';
             
-            // Status badge
             let statusClass = '';
             switch(journal.process) {
-                case 'Sudah disubmit':
-                    statusClass = 'bg-blue-100 text-blue-800';
-                    break;
-                case 'Belum submit':
-                    statusClass = 'bg-gray-100 text-gray-800';
-                    break;
-                case 'Review':
-                    statusClass = 'bg-yellow-100 text-yellow-800';
-                    break;
-                case 'Editing':
-                    statusClass = 'bg-purple-100 text-purple-800';
-                    break;
-                case 'Publish':
-                    statusClass = 'bg-green-100 text-green-800';
-                    break;
+                case 'Sudah disubmit': statusClass = 'bg-blue-100 text-blue-800'; break;
+                case 'Belum submit': statusClass = 'bg-gray-100 text-gray-800'; break;
+                case 'Review': statusClass = 'bg-yellow-100 text-yellow-800'; break;
+                case 'Editing': statusClass = 'bg-purple-100 text-purple-800'; break;
+                case 'LoA sudah terbit': statusClass = 'bg-cyan-100 text-cyan-800'; break;
+                case 'Publish': statusClass = 'bg-green-100 text-green-800'; break;
             }
             
-            // Payment badge
             const paymentClass = journal.payment === 'Sudah Bayar' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+            const typeClass = journal.publicationType === 'Fast Track' ? 'bg-indigo-100 text-indigo-800' : 'bg-pink-100 text-pink-800';
             
-            // Deadline cell with urgent indicator
             let deadlineCell = '';
             if (isUrgent) {
-                deadlineCell = `
-                    <div class="flex items-center">
-                        <span class="mr-2">${journal.deadline}</span>
-                        <span class="h-2 w-2 rounded-full bg-red-500 urgent"></span>
-                    </div>
-                `;
+                deadlineCell = `<div class="flex items-center font-semibold text-red-600"><span class="mr-2">${journal.deadline}</span><span class="h-2 w-2 rounded-full bg-red-500 urgent"></span></div>`;
             } else if (daysDiff < 0 && journal.process !== 'Publish') {
-                deadlineCell = `
-                    <div class="flex items-center text-red-500">
-                        <span class="mr-2">${journal.deadline}</span>
-                        <span class="text-xs">(Terlambat)</span>
-                    </div>
-                `;
+                deadlineCell = `<div class="flex items-center text-red-500 font-semibold"><span class="mr-2">${journal.deadline}</span><span class="text-xs">(Terlewat)</span></div>`;
             } else {
                 deadlineCell = journal.deadline;
             }
@@ -545,9 +607,7 @@
             row.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center">
-                            <i class="fas fa-user text-orange-500"></i>
-                        </div>
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center"><i class="fas fa-user text-orange-500"></i></div>
                         <div class="ml-4">
                             <div class="text-sm font-medium text-gray-900">${journal.authorName}</div>
                             <div class="text-sm text-gray-500">${journal.affiliation}</div>
@@ -555,50 +615,40 @@
                     </div>
                 </td>
                 <td class="px-6 py-4">
-                    <div class="text-sm text-gray-900 font-medium">${journal.title.substring(0, 30)}${journal.title.length > 30 ? '...' : ''}</div>
-                    <div class="text-xs text-gray-500">${journal.entryDate}</div>
+                    <div class="text-sm text-gray-900 font-medium" title="${journal.title}">${journal.title.substring(0, 30)}${journal.title.length > 30 ? '...' : ''}</div>
+                    <div class="text-xs text-gray-500">Masuk: ${journal.entryDate}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                        ${journal.journalTarget}
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    ${deadlineCell}
+                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${typeClass}">${journal.publicationType}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
-                        ${journal.process}
-                    </span>
-                    <span class="mt-1 block px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${paymentClass}">
-                        ${journal.payment}
-                    </span>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">${journal.journalTarget}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${deadlineCell}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${journal.process}</span>
+                    <span class="mt-1 block px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${paymentClass}">${journal.payment}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div class="flex space-x-2">
-                        <button onclick="editJournal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <a href="https://wa.me/${journal.phone.replace(/^0/, '62')}" target="_blank" class="text-green-600 hover:text-green-900" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <button onclick="createLOA('${journal.journalTarget}')" class="text-blue-600 hover:text-blue-900" title="Buat LoA">
-                            <i class="fas fa-file-alt"></i>
-                        </button>
-                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit"><i class="fas fa-edit"></i></button>
+                        <a href="https://wa.me/${journal.phone.replace(/^0/, '62')}" target="_blank" class="text-green-600 hover:text-green-900" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <button onclick="createLOA('${journal.journalTarget}')" class="text-blue-600 hover:text-blue-900" title="Buat LoA"><i class="fas fa-file-alt"></i></button>
+                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             `;
-            
             return row;
         }
 
-        // Edit journal
-        function editJournal(id) {
+        /**
+         * Opens and populates the edit modal.
+         * @param {string} id - The Firebase key of the journal to edit.
+         */
+        window.openEditModal = function(id) {
             journalsRef.child(id).once('value', (snapshot) => {
                 const journal = snapshot.val();
+                if (!journal) return;
                 
                 editId.value = id;
                 document.getElementById('editEntryDate').value = journal.entryDate;
@@ -606,6 +656,7 @@
                 document.getElementById('editAffiliation').value = journal.affiliation;
                 document.getElementById('editTitle').value = journal.title;
                 document.getElementById('editPhone').value = journal.phone;
+                document.getElementById('editPublicationType').value = journal.publicationType || 'Reguler'; // Default to Reguler if not set
                 document.getElementById('editJournalTarget').value = journal.journalTarget;
                 document.getElementById('editDeadline').value = journal.deadline;
                 document.querySelector(`input[name="editProcess"][value="${journal.process}"]`).checked = true;
@@ -615,30 +666,25 @@
             });
         }
 
-        // Save edited journal
-        saveEdit.addEventListener('click', () => {
+        /**
+         * Saves the changes from the edit modal.
+         */
+        function handleSaveEdit() {
             const id = editId.value;
-            const entryDate = document.getElementById('editEntryDate').value;
-            const authorName = document.getElementById('editAuthorName').value;
-            const affiliation = document.getElementById('editAffiliation').value;
-            const title = document.getElementById('editTitle').value;
-            const phone = document.getElementById('editPhone').value;
-            const journalTarget = document.getElementById('editJournalTarget').value;
-            const deadline = document.getElementById('editDeadline').value;
-            const process = document.querySelector('input[name="editProcess"]:checked').value;
-            const payment = document.querySelector('input[name="editPayment"]:checked').value;
+            const updatedData = {
+                entryDate: document.getElementById('editEntryDate').value,
+                authorName: document.getElementById('editAuthorName').value,
+                affiliation: document.getElementById('editAffiliation').value,
+                title: document.getElementById('editTitle').value,
+                phone: document.getElementById('editPhone').value,
+                publicationType: document.getElementById('editPublicationType').value,
+                journalTarget: document.getElementById('editJournalTarget').value,
+                deadline: document.getElementById('editDeadline').value,
+                process: document.querySelector('input[name="editProcess"]:checked').value,
+                payment: document.querySelector('input[name="editPayment"]:checked').value
+            };
             
-            journalsRef.child(id).update({
-                entryDate,
-                authorName,
-                affiliation,
-                title,
-                phone,
-                journalTarget,
-                deadline,
-                process,
-                payment
-            }, (error) => {
+            journalsRef.child(id).update(updatedData, (error) => {
                 if (error) {
                     alert('Gagal memperbarui data: ' + error.message);
                 } else {
@@ -646,18 +692,22 @@
                     alert('Data berhasil diperbarui!');
                 }
             });
-        });
+        }
 
-        // Show delete confirmation
-        function showDeleteConfirm(id) {
-            editId.value = id;
+        /**
+         * Shows the delete confirmation modal.
+         * @param {string} id - The Firebase key of the journal to delete.
+         */
+        window.showDeleteConfirm = function(id) {
+            confirmModal.dataset.id = id;
             confirmModal.classList.remove('hidden');
         }
 
-        // Confirm delete
-        confirmDelete.addEventListener('click', () => {
-            const id = editId.value;
-            
+        /**
+         * Handles the final deletion of a journal entry.
+         */
+        function handleDeleteConfirm() {
+            const id = confirmModal.dataset.id;
             journalsRef.child(id).remove()
                 .then(() => {
                     confirmModal.classList.add('hidden');
@@ -666,47 +716,38 @@
                 .catch(error => {
                     alert('Gagal menghapus data: ' + error.message);
                 });
-        });
+        }
 
-        // Cancel delete
-        cancelDelete.addEventListener('click', () => {
-            confirmModal.classList.add('hidden');
-        });
-
-        // Cancel edit
-        cancelEdit.addEventListener('click', () => {
-            editModal.classList.add('hidden');
-        });
-
-        // Search functionality
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
+        /**
+         * Applies all active filters to the journal list.
+         */
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const typeFilter = filterType.value;
+            const journalFilter = filterJournal.value;
+            const statusFilter = filterStatus.value;
+            
             const rows = journalList.querySelectorAll('tr');
             
             rows.forEach(row => {
-                const author = row.querySelector('td:first-child div div:first-child').textContent.toLowerCase();
-                const title = row.querySelector('td:nth-child(2) div:first-child').textContent.toLowerCase();
-                
-                if (author.includes(searchTerm) || title.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
+                const searchMatch = row.dataset.author.includes(searchTerm) || row.dataset.title.includes(searchTerm);
+                const typeMatch = !typeFilter || row.dataset.type === typeFilter;
+                const journalMatch = !journalFilter || row.dataset.journal === journalFilter;
+                const statusMatch = !statusFilter || row.dataset.status === statusFilter;
 
-        // Create LOA document
-        function createLOA(journal) {
-            // Replace with actual Google Docs template URLs for each journal
+                row.style.display = (searchMatch && typeMatch && journalMatch && statusMatch) ? '' : 'none';
+            });
+        }
+
+        /**
+         * Opens a Google Docs template for creating a Letter of Acceptance.
+         * @param {string} journal - The name of the journal.
+         */
+        window.createLOA = function(journal) {
             const templates = {
-                'EBISMEN': 'https://docs.google.com/document/d/EBISMEN_TEMPLATE_ID/edit',
-                'WAWASAN': 'https://docs.google.com/document/d/WAWASAN_TEMPLATE_ID/edit',
-                'PROFIT': 'https://docs.google.com/document/d/PROFIT_TEMPLATE_ID/edit',
-                'POPULER': 'https://docs.google.com/document/d/POPULER_TEMPLATE_ID/edit',
-                'SIDU': 'https://docs.google.com/document/d/SIDU_TEMPLATE_ID/edit',
-                'INSDU': 'https://docs.google.com/document/d/INSDU_TEMPLATE_ID/edit',
-                'OCEAN': 'https://docs.google.com/document/d/OCEAN_TEMPLATE_ID/edit',
-                'KTI': 'https://docs.google.com/document/d/KTI_TEMPLATE_ID/edit'
+                'EBISMEN': 'https://docs.google.com/document/d/your-template-id-here/copy',
+                'WAWASAN': 'https://docs.google.com/document/d/your-template-id-here/copy',
+                // Add other template URLs here, using the /copy endpoint to force a new document
             };
             
             if (templates[journal]) {
@@ -716,16 +757,51 @@
             }
         }
 
-        // Initialize date fields with today's date
-        window.onload = function() {
+        /**
+         * Initializes the date fields in the main form.
+         */
+        function initializeDateFields() {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('entryDate').value = today;
-            
-            // Set deadline to 7 days from today
-            const nextWeek = new Date();
-            nextWeek.setDate(nextWeek.getDate() + 7);
-            document.getElementById('deadline').value = nextWeek.toISOString().split('T')[0];
-        };
+            entryDateInput.value = today;
+            updateDeadline(entryDateInput, publicationTypeInput, deadlineInput);
+        }
+
+        // --- Event Listeners ---
+        journalForm.addEventListener('submit', handleFormSubmit);
+        saveEdit.addEventListener('click', handleSaveEdit);
+        confirmDelete.addEventListener('click', handleDeleteConfirm);
+
+        // Modal close buttons
+        cancelDelete.addEventListener('click', () => confirmModal.classList.add('hidden'));
+        cancelEdit.addEventListener('click', () => editModal.classList.add('hidden'));
+
+        // Auto-deadline listeners
+        entryDateInput.addEventListener('change', () => updateDeadline(entryDateInput, publicationTypeInput, deadlineInput));
+        publicationTypeInput.addEventListener('change', () => updateDeadline(entryDateInput, publicationTypeInput, deadlineInput));
+        editEntryDateInput.addEventListener('change', () => updateDeadline(editEntryDateInput, editPublicationTypeInput, editDeadlineInput));
+        editPublicationTypeInput.addEventListener('change', () => updateDeadline(editEntryDateInput, editPublicationTypeInput, editDeadlineInput));
+        
+        // Filter listeners
+        searchInput.addEventListener('input', applyFilters);
+        filterType.addEventListener('change', applyFilters);
+        filterJournal.addEventListener('change', applyFilters);
+        filterStatus.addEventListener('change', applyFilters);
+        resetFiltersBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filterType.value = '';
+            filterJournal.value = '';
+            filterStatus.value = '';
+            applyFilters();
+        });
+        
+        // Initial data load from Firebase
+        journalsRef.on('value', renderJournalList, (error) => {
+            console.error("Firebase read failed: " + error.name);
+            alert("Gagal memuat data dari database. Periksa koneksi internet Anda.");
+        });
+        
+        // Initialize on page load
+        window.onload = initializeDateFields;
     </script>
 </body>
 </html>
