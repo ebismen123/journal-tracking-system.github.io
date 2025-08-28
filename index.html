@@ -173,40 +173,46 @@
                     </div>
 
                     <!-- Filters -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                        <div class="relative md:col-span-4">
+                    <div class="space-y-4 mb-4">
+                        <div class="relative">
                             <input type="text" id="searchInput" placeholder="Cari berdasarkan nama penulis atau judul..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
                         </div>
-                        
-                        <select id="filterType" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                            <option value="">Semua Jenis Publikasi</option>
-                            <option value="Reguler">Reguler</option>
-                            <option value="Fast Track">Fast Track</option>
-                        </select>
-                        <select id="filterJournal" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                             <option value="">Semua Jurnal</option>
-                            <option value="EBISMEN">EBISMEN</option>
-                            <option value="WAWASAN">WAWASAN</option>
-                            <option value="PROFIT">PROFIT</option>
-                            <option value="POPULER">POPULER</option>
-                            <option value="SIDU">SIDU</option>
-                            <option value="INSDU">INSDU</option>
-                            <option value="OCEAN">OCEAN</option>
-                            <option value="KTI">KTI</option>
-                        </select>
-                        <select id="filterStatus" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                            <option value="">Semua Status</option>
-                            <option value="Belum submit">Belum submit</option>
-                            <option value="Sudah disubmit">Sudah disubmit</option>
-                            <option value="Review">Review</option>
-                            <option value="Editing">Editing</option>
-                            <option value="LoA sudah terbit">LoA sudah terbit</option>
-                            <option value="Publish">Publish</option>
-                        </select>
-                        <button id="resetFilters" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 font-medium">Reset</button>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <select id="filterType" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="">Semua Jenis</option>
+                                <option value="Reguler">Reguler</option>
+                                <option value="Fast Track">Fast Track</option>
+                            </select>
+                            <select id="filterJournal" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                 <option value="">Semua Jurnal</option>
+                                <option value="EBISMEN">EBISMEN</option>
+                                <option value="WAWASAN">WAWASAN</option>
+                                <option value="PROFIT">PROFIT</option>
+                                <option value="POPULER">POPULER</option>
+                                <option value="SIDU">SIDU</option>
+                                <option value="INSDU">INSDU</option>
+                                <option value="OCEAN">OCEAN</option>
+                                <option value="KTI">KTI</option>
+                            </select>
+                            <select id="filterStatus" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="">Semua Status</option>
+                                <option value="Belum submit">Belum submit</option>
+                                <option value="Sudah disubmit">Sudah disubmit</option>
+                                <option value="Review">Review</option>
+                                <option value="Editing">Editing</option>
+                                <option value="LoA sudah terbit">LoA sudah terbit</option>
+                                <option value="Publish">Publish</option>
+                            </select>
+                            <select id="filterPayment" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="">Semua Pembayaran</option>
+                                <option value="Sudah Bayar">Sudah Bayar</option>
+                                <option value="Belum Bayar">Belum Bayar</option>
+                            </select>
+                            <button id="resetFilters" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 font-medium col-span-2 md:col-span-1">Reset</button>
+                        </div>
                     </div>
 
                     <div class="overflow-auto" style="max-height: 70vh;">
@@ -466,6 +472,7 @@
         const filterType = document.getElementById('filterType');
         const filterJournal = document.getElementById('filterJournal');
         const filterStatus = document.getElementById('filterStatus');
+        const filterPayment = document.getElementById('filterPayment');
         const resetFiltersBtn = document.getElementById('resetFilters');
 
         // --- Functions ---
@@ -574,6 +581,7 @@
             row.dataset.type = journal.publicationType;
             row.dataset.journal = journal.journalTarget;
             row.dataset.status = journal.process;
+            row.dataset.payment = journal.payment;
 
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -726,6 +734,7 @@
             const typeFilter = filterType.value;
             const journalFilter = filterJournal.value;
             const statusFilter = filterStatus.value;
+            const paymentFilter = filterPayment.value;
             
             const rows = journalList.querySelectorAll('tr');
             
@@ -734,8 +743,9 @@
                 const typeMatch = !typeFilter || row.dataset.type === typeFilter;
                 const journalMatch = !journalFilter || row.dataset.journal === journalFilter;
                 const statusMatch = !statusFilter || row.dataset.status === statusFilter;
+                const paymentMatch = !paymentFilter || row.dataset.payment === paymentFilter;
 
-                row.style.display = (searchMatch && typeMatch && journalMatch && statusMatch) ? '' : 'none';
+                row.style.display = (searchMatch && typeMatch && journalMatch && statusMatch && paymentMatch) ? '' : 'none';
             });
         }
 
@@ -786,11 +796,13 @@
         filterType.addEventListener('change', applyFilters);
         filterJournal.addEventListener('change', applyFilters);
         filterStatus.addEventListener('change', applyFilters);
+        filterPayment.addEventListener('change', applyFilters);
         resetFiltersBtn.addEventListener('click', () => {
             searchInput.value = '';
             filterType.value = '';
             filterJournal.value = '';
             filterStatus.value = '';
+            filterPayment.value = '';
             applyFilters();
         });
         
