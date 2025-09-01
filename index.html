@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeruk Manis ATS - Article Journal Tracker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.tailwindcss.com/"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .orange-gradient {
@@ -35,15 +33,19 @@
     </style>
 </head>
 <body class="min-h-screen bg-gray-50" style="background-image: url('https://img.freepik.com/premium-vector/seamless-pattern-with-white-outline-oranges-fruit-citrus-orange-color-background_528213-749.jpg'); background-size: 500px; background-repeat: repeat;">
+
     <!-- Header with Logo -->
-    <header class="orange-gradient text-white py-4 px-6 shadow-lg sticky top-0 z-40">
-        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
-            <div class="flex items-center mb-4 md:mb-0">
+    <header class="orange-gradient text-white py-3 px-4 shadow-lg sticky top-0 z-40">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center">
                 <img src="https://img.icons8.com/?size=100&id=XxRdzBNPGyUO&format=png&color=FFFFFF" alt="Orange" class="h-8 w-auto mr-3">
-                <h1 class="text-2xl md:text-3xl font-bold">Jeruk Manis</h1>
+                <h1 class="text-xl sm:text-2xl font-bold">Jeruk Manis</h1>
             </div>
             <div class="flex items-center">
-                <p class="hidden md:block italic">Article Tracking System</p>
+                 <button id="notificationBtn" class="text-white hover:text-orange-200 mr-4 transition-colors" title="Aktifkan Notifikasi Deadline">
+                    <i class="fas fa-bell text-xl"></i>
+                </button>
+                <p class="hidden sm:block italic text-sm">Article Tracking System</p>
             </div>
         </div>
     </header>
@@ -75,6 +77,46 @@
                         <label for="title" class="block text-sm font-medium text-gray-700">Judul Artikel</label>
                         <textarea id="title" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border"></textarea>
                     </div>
+
+                    <div>
+                        <label for="articleNumber" class="block text-sm font-medium text-gray-700">Nomor Artikel</label>
+                        <input type="text" id="articleNumber" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
+                            <input type="number" id="volume" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                        </div>
+                        <div>
+                            <label for="issueNumber" class="block text-sm font-medium text-gray-700">Nomor (Terbitan)</label>
+                            <input type="number" id="issueNumber" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="publishMonth" class="block text-sm font-medium text-gray-700">Bulan Terbit</label>
+                            <select id="publishMonth" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                <option value="Januari">Januari</option>
+                                <option value="Februari">Februari</option>
+                                <option value="Maret">Maret</option>
+                                <option value="April">April</option>
+                                <option value="Mei">Mei</option>
+                                <option value="Juni">Juni</option>
+                                <option value="Juli">Juli</option>
+                                <option value="Agustus">Agustus</option>
+                                <option value="September">September</option>
+                                <option value="Oktober">Oktober</option>
+                                <option value="November">November</option>
+                                <option value="Desember">Desember</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="publishYear" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
+                            <input type="number" id="publishYear" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border" placeholder="2025">
+                        </div>
+                    </div>
                     
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">No HP</label>
@@ -101,6 +143,8 @@
                             <option value="INSDU">INSDU</option>
                             <option value="OCEAN">OCEAN</option>
                             <option value="KTI">KTI</option>
+                            <option value="SEJAHTERA">SEJAHTERA</option>
+                            <option value="KARUNIA">KARUNIA</option>
                         </select>
                     </div>
                     
@@ -175,7 +219,7 @@
                     <!-- Filters -->
                     <div class="space-y-4 mb-4">
                         <div class="relative">
-                            <input type="text" id="searchInput" placeholder="Cari berdasarkan nama penulis atau judul..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                            <input type="text" id="searchInput" placeholder="Cari berdasarkan nama, judul, atau nomor artikel..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
@@ -196,6 +240,8 @@
                                 <option value="INSDU">INSDU</option>
                                 <option value="OCEAN">OCEAN</option>
                                 <option value="KTI">KTI</option>
+                                <option value="SEJAHTERA">SEJAHTERA</option>
+                                <option value="KARUNIA">KARUNIA</option>
                             </select>
                             <select id="filterStatus" class="w-full py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
                                 <option value="">Semua Status</option>
@@ -234,17 +280,22 @@
                         </table>
                     </div>
                     
+                    <div id="loadingSpinner" class="text-center py-8 hidden">
+                        <i class="fas fa-spinner fa-spin text-4xl text-orange-400"></i>
+                        <p class="mt-2 text-gray-600">Memuat data...</p>
+                    </div>
+
                     <div id="noData" class="text-center py-8 hidden">
                         <i class="fas fa-book-open text-4xl text-orange-300 mb-4"></i>
                         <h3 class="text-lg font-medium text-gray-700">Belum ada data jurnal</h3>
-                        <p class="text-gray-500 mt-1">Mulai dengan menambahkan data jurnal melalui form di samping</p>
+                        <p class="text-gray-500 mt-1">Mulai dengan menambahkan data jurnal melalui form di samping.</p>
                     </div>
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- Modal for Edit -->
+    <!-- Modals -->
     <div id="editModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -257,7 +308,7 @@
                     <form id="editForm">
                         <input type="hidden" id="editId">
                         <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                            <div class="mb-4">
+                           <div class="mb-4">
                                 <label for="editEntryDate" class="block text-sm font-medium text-gray-700">Tanggal Artikel Masuk</label>
                                 <input type="date" id="editEntryDate" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                             </div>
@@ -275,6 +326,46 @@
                             <div class="mb-4">
                                 <label for="editTitle" class="block text-sm font-medium text-gray-700">Judul Artikel</label>
                                 <textarea id="editTitle" rows="2" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="editArticleNumber" class="block text-sm font-medium text-gray-700">Nomor Artikel</label>
+                                <input type="text" id="editArticleNumber" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+
+                             <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="editVolume" class="block text-sm font-medium text-gray-700">Volume</label>
+                                    <input type="number" id="editVolume" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                </div>
+                                <div>
+                                    <label for="editIssueNumber" class="block text-sm font-medium text-gray-700">Nomor (Terbitan)</label>
+                                    <input type="number" id="editIssueNumber" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="editPublishMonth" class="block text-sm font-medium text-gray-700">Bulan Terbit</label>
+                                    <select id="editPublishMonth" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                        <option value="Januari">Januari</option>
+                                        <option value="Februari">Februari</option>
+                                        <option value="Maret">Maret</option>
+                                        <option value="April">April</option>
+                                        <option value="Mei">Mei</option>
+                                        <option value="Juni">Juni</option>
+                                        <option value="Juli">Juli</option>
+                                        <option value="Agustus">Agustus</option>
+                                        <option value="September">September</option>
+                                        <option value="Oktober">Oktober</option>
+                                        <option value="November">November</option>
+                                        <option value="Desember">Desember</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="editPublishYear" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
+                                    <input type="number" id="editPublishYear" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border" placeholder="2025">
+                                </div>
                             </div>
                             
                             <div class="mb-4">
@@ -302,6 +393,8 @@
                                     <option value="INSDU">INSDU</option>
                                     <option value="OCEAN">OCEAN</option>
                                     <option value="KTI">KTI</option>
+                                    <option value="SEJAHTERA">SEJAHTERA</option>
+                                    <option value="KARUNIA">KARUNIA</option>
                                 </select>
                             </div>
                             
@@ -367,8 +460,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Confirmation Modal -->
     <div id="confirmModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -400,6 +491,73 @@
             </div>
         </div>
     </div>
+    <!-- Modal for Publish URL -->
+    <div id="publishUrlModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-link text-blue-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">URL Artikel Terbit</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500 mb-2">Masukkan URL lengkap artikel yang sudah dipublikasikan.</p>
+                                <input type="url" id="publishUrlInput" placeholder="https://..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="savePublishUrl" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-save mr-2"></i> Simpan URL
+                    </button>
+                    <button type="button" id="cancelPublishUrl" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-times mr-2"></i> Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for LoA URL -->
+    <div id="loaUrlModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-award text-yellow-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">URL Letter of Acceptance (LoA)</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500 mb-2">Masukkan URL LoA dari Google Drive atau platform lain.</p>
+                                <input type="url" id="loaUrlInput" placeholder="https://..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="saveLoaUrl" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-save mr-2"></i> Simpan URL LoA
+                    </button>
+                    <button type="button" id="cancelLoaUrl" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-times mr-2"></i> Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Footer -->
     <footer class="bg-orange-900 text-white py-6 mt-8">
@@ -430,7 +588,11 @@
         </div>
     </footer>
 
-    <script>
+    <!-- Using Firebase v9+ modular SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, update, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAA5ylO4TMtGnnPhrm1vGUDF6AafNSrOUQ",
@@ -443,9 +605,13 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const journalsRef = database.ref('journals');
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const journalsRef = ref(database, 'journals');
+
+        // --- Global Variables ---
+        let allJournalsData = {};
+        const notifiedJournalIds = new Set();
 
         // --- DOM Elements ---
         const journalForm = document.getElementById('journalForm');
@@ -459,106 +625,87 @@
         const confirmModal = document.getElementById('confirmModal');
         const confirmDelete = document.getElementById('confirmDelete');
         const cancelDelete = document.getElementById('cancelDelete');
-        
-        // Form elements for auto-deadline
         const entryDateInput = document.getElementById('entryDate');
         const publicationTypeInput = document.getElementById('publicationType');
         const deadlineInput = document.getElementById('deadline');
         const editEntryDateInput = document.getElementById('editEntryDate');
         const editPublicationTypeInput = document.getElementById('editPublicationType');
         const editDeadlineInput = document.getElementById('editDeadline');
-        
-        // Filter elements
         const filterType = document.getElementById('filterType');
         const filterJournal = document.getElementById('filterJournal');
         const filterStatus = document.getElementById('filterStatus');
         const filterPayment = document.getElementById('filterPayment');
         const resetFiltersBtn = document.getElementById('resetFilters');
-
+        const publishUrlModal = document.getElementById('publishUrlModal');
+        const savePublishUrl = document.getElementById('savePublishUrl');
+        const cancelPublishUrl = document.getElementById('cancelPublishUrl');
+        const publishUrlInput = document.getElementById('publishUrlInput');
+        const loaUrlModal = document.getElementById('loaUrlModal');
+        const saveLoaUrl = document.getElementById('saveLoaUrl');
+        const cancelLoaUrl = document.getElementById('cancelLoaUrl');
+        const loaUrlInput = document.getElementById('loaUrlInput');
+        
         // --- Functions ---
-
-        /**
-         * Updates the deadline date based on the entry date and publication type.
-         * @param {HTMLInputElement} entryDateElem - The entry date input element.
-         * @param {HTMLSelectElement} publicationTypeElem - The publication type select element.
-         * @param {HTMLInputElement} deadlineElem - The deadline input element to update.
-         */
+        
         function updateDeadline(entryDateElem, publicationTypeElem, deadlineElem) {
             const entryDateValue = entryDateElem.value;
             if (!entryDateValue) return;
-
             const entryDate = new Date(entryDateValue);
             const publicationType = publicationTypeElem.value;
             const daysToAdd = publicationType === 'Fast Track' ? 2 : 8;
-            
             entryDate.setDate(entryDate.getDate() + daysToAdd);
             deadlineElem.value = entryDate.toISOString().split('T')[0];
         }
 
-        /**
-         * Handles the main form submission.
-         * @param {Event} e - The form submission event.
-         */
         function handleFormSubmit(e) {
             e.preventDefault();
-            
             const newJournalData = {
                 entryDate: document.getElementById('entryDate').value,
                 authorName: document.getElementById('authorName').value,
                 affiliation: document.getElementById('affiliation').value,
                 title: document.getElementById('title').value,
+                articleNumber: document.getElementById('articleNumber').value,
+                volume: document.getElementById('volume').value,
+                issueNumber: document.getElementById('issueNumber').value,
+                publishMonth: document.getElementById('publishMonth').value,
+                publishYear: document.getElementById('publishYear').value,
                 phone: document.getElementById('phone').value,
                 publicationType: document.getElementById('publicationType').value,
                 journalTarget: document.getElementById('journalTarget').value,
                 deadline: document.getElementById('deadline').value,
                 process: document.querySelector('input[name="process"]:checked').value,
                 payment: document.querySelector('input[name="payment"]:checked').value,
-                createdAt: firebase.database.ServerValue.TIMESTAMP
+                createdAt: serverTimestamp(),
+                publishedUrl: "",
+                loaUrl: "" // Initialize LoA URL field
             };
-            
-            journalsRef.push(newJournalData);
-            
+            push(journalsRef, newJournalData);
             journalForm.reset();
             document.getElementById('notSubmitted').checked = true;
             document.getElementById('notPaid').checked = true;
             initializeDateFields();
-            
             alert('Data jurnal berhasil disimpan!');
         }
 
-        /**
-         * Renders the list of journals from Firebase data.
-         * @param {DataSnapshot} snapshot - The Firebase data snapshot.
-         */
         function renderJournalList(snapshot) {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.classList.add('hidden');
             journalList.innerHTML = '';
             const journals = snapshot.val();
-            
-            if (!journals) {
+            allJournalsData = journals || {};
+            if (!journals || Object.keys(journals).length === 0) {
                 noData.classList.remove('hidden');
                 return;
             }
-            
             noData.classList.add('hidden');
-            
-            const journalsArray = Object.keys(journals).map(key => ({
-                id: key,
-                ...journals[key]
-            }));
-            
-            // Sort by priority: unfinished items first, then by closest deadline
+            const journalsArray = Object.keys(journals).map(key => ({ id: key, ...journals[key] }));
             journalsArray.sort((a, b) => {
                 const aIsDone = a.process === 'Publish';
                 const bIsDone = b.process === 'Publish';
-
                 if (aIsDone && !bIsDone) return 1;
                 if (!aIsDone && bIsDone) return -1;
-
-                const aDeadline = new Date(a.deadline).getTime();
-                const bDeadline = new Date(b.deadline).getTime();
-                return aDeadline - bDeadline;
+                return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
             });
-            
             journalsArray.forEach(journal => {
                 const row = createJournalRow(journal.id, journal);
                 journalList.appendChild(row);
@@ -566,18 +713,13 @@
             applyFilters();
         }
 
-        /**
-         * Creates a table row element for a single journal entry.
-         * @param {string} key - The Firebase key for the journal.
-         * @param {object} journal - The journal data object.
-         * @returns {HTMLTableRowElement} The created table row.
-         */
         function createJournalRow(key, journal) {
             const row = document.createElement('tr');
             row.className = 'hover:bg-orange-50 bg-white bg-opacity-90 transition-colors';
             row.dataset.id = key;
             row.dataset.author = journal.authorName.toLowerCase();
             row.dataset.title = journal.title.toLowerCase();
+            row.dataset.articleNumber = journal.articleNumber ? journal.articleNumber.toLowerCase() : '';
             row.dataset.type = journal.publicationType;
             row.dataset.journal = journal.journalTarget;
             row.dataset.status = journal.process;
@@ -612,6 +754,25 @@
                 deadlineCell = journal.deadline;
             }
             
+            let publishUrlAction = '';
+            if (journal.process === 'Publish') {
+                if (journal.publishedUrl) {
+                    publishUrlAction = `<a href="${journal.publishedUrl}" target="_blank" class="text-green-600 hover:text-green-900" title="Lihat Artikel Terbit"><i class="fas fa-external-link-alt"></i></a>`;
+                } else {
+                    publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-blue-600 hover:text-blue-900" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
+                }
+            }
+
+            let loaActionHtml = '';
+            if (journal.loaUrl) {
+                loaActionHtml = `
+                    <a href="${journal.loaUrl}" target="_blank" class="text-yellow-600 hover:text-yellow-800" title="Buka URL LoA"><i class="fas fa-award"></i></a>
+                    <button onclick="sendLoaViaWhatsApp('${key}')" class="text-green-500 hover:text-green-700" title="Kirim Link LoA via WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                `;
+            } else {
+                loaActionHtml = `<button onclick="openLoaUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL LoA"><i class="fas fa-award"></i></button>`;
+            }
+
             row.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
@@ -624,7 +785,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <div class="text-sm text-gray-900 font-medium" title="${journal.title}">${journal.title.substring(0, 30)}${journal.title.length > 30 ? '...' : ''}</div>
-                    <div class="text-xs text-gray-500">Masuk: ${journal.entryDate}</div>
+                    <div class="text-xs text-gray-500 mt-1">No: ${journal.articleNumber || '-'}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${typeClass}">${journal.publicationType}</span>
@@ -638,52 +799,55 @@
                     <span class="mt-1 block px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${paymentClass}">${journal.payment}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div class="flex space-x-2">
+                    <div class="flex space-x-3 items-center">
                         <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit"><i class="fas fa-edit"></i></button>
-                        <a href="https://wa.me/${journal.phone.replace(/^0/, '62')}" target="_blank" class="text-green-600 hover:text-green-900" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <button onclick="createLOA('${journal.journalTarget}')" class="text-blue-600 hover:text-blue-900" title="Buat LoA"><i class="fas fa-file-alt"></i></button>
+                        ${loaActionHtml}
                         <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
+                        ${publishUrlAction}
                     </div>
                 </td>
             `;
             return row;
         }
 
-        /**
-         * Opens and populates the edit modal.
-         * @param {string} id - The Firebase key of the journal to edit.
-         */
         window.openEditModal = function(id) {
-            journalsRef.child(id).once('value', (snapshot) => {
+            const journalRef = ref(database, 'journals/' + id);
+            onValue(journalRef, (snapshot) => {
                 const journal = snapshot.val();
                 if (!journal) return;
-                
                 editId.value = id;
                 document.getElementById('editEntryDate').value = journal.entryDate;
                 document.getElementById('editAuthorName').value = journal.authorName;
                 document.getElementById('editAffiliation').value = journal.affiliation;
                 document.getElementById('editTitle').value = journal.title;
+                document.getElementById('editArticleNumber').value = journal.articleNumber || '';
+                document.getElementById('editVolume').value = journal.volume || '';
+                document.getElementById('editIssueNumber').value = journal.issueNumber || '';
+                document.getElementById('editPublishMonth').value = journal.publishMonth || 'Januari';
+                document.getElementById('editPublishYear').value = journal.publishYear || new Date().getFullYear();
                 document.getElementById('editPhone').value = journal.phone;
-                document.getElementById('editPublicationType').value = journal.publicationType || 'Reguler'; // Default to Reguler if not set
+                document.getElementById('editPublicationType').value = journal.publicationType || 'Reguler';
                 document.getElementById('editJournalTarget').value = journal.journalTarget;
                 document.getElementById('editDeadline').value = journal.deadline;
                 document.querySelector(`input[name="editProcess"][value="${journal.process}"]`).checked = true;
                 document.querySelector(`input[name="editPayment"][value="${journal.payment}"]`).checked = true;
-                
                 editModal.classList.remove('hidden');
-            });
+            }, { onlyOnce: true });
         }
 
-        /**
-         * Saves the changes from the edit modal.
-         */
         function handleSaveEdit() {
             const id = editId.value;
+            const journalRef = ref(database, 'journals/' + id);
             const updatedData = {
                 entryDate: document.getElementById('editEntryDate').value,
                 authorName: document.getElementById('editAuthorName').value,
                 affiliation: document.getElementById('editAffiliation').value,
                 title: document.getElementById('editTitle').value,
+                articleNumber: document.getElementById('editArticleNumber').value,
+                volume: document.getElementById('editVolume').value,
+                issueNumber: document.getElementById('editIssueNumber').value,
+                publishMonth: document.getElementById('editPublishMonth').value,
+                publishYear: document.getElementById('editPublishYear').value,
                 phone: document.getElementById('editPhone').value,
                 publicationType: document.getElementById('editPublicationType').value,
                 journalTarget: document.getElementById('editJournalTarget').value,
@@ -691,88 +855,212 @@
                 process: document.querySelector('input[name="editProcess"]:checked').value,
                 payment: document.querySelector('input[name="editPayment"]:checked').value
             };
-            
-            journalsRef.child(id).update(updatedData, (error) => {
-                if (error) {
-                    alert('Gagal memperbarui data: ' + error.message);
-                } else {
-                    editModal.classList.add('hidden');
-                    alert('Data berhasil diperbarui!');
-                }
-            });
+            update(journalRef, updatedData).then(() => {
+                editModal.classList.add('hidden');
+                alert('Data berhasil diperbarui!');
+            }).catch(error => alert('Gagal memperbarui data: ' + error.message));
         }
 
-        /**
-         * Shows the delete confirmation modal.
-         * @param {string} id - The Firebase key of the journal to delete.
-         */
         window.showDeleteConfirm = function(id) {
             confirmModal.dataset.id = id;
             confirmModal.classList.remove('hidden');
         }
 
-        /**
-         * Handles the final deletion of a journal entry.
-         */
         function handleDeleteConfirm() {
             const id = confirmModal.dataset.id;
-            journalsRef.child(id).remove()
-                .then(() => {
-                    confirmModal.classList.add('hidden');
-                    alert('Data berhasil dihapus!');
-                })
-                .catch(error => {
-                    alert('Gagal menghapus data: ' + error.message);
-                });
+            const journalRef = ref(database, 'journals/' + id);
+            remove(journalRef).then(() => {
+                confirmModal.classList.add('hidden');
+                alert('Data berhasil dihapus!');
+            }).catch(error => alert('Gagal menghapus data: ' + error.message));
         }
 
-        /**
-         * Applies all active filters to the journal list.
-         */
         function applyFilters() {
             const searchTerm = searchInput.value.toLowerCase();
             const typeFilter = filterType.value;
             const journalFilter = filterJournal.value;
             const statusFilter = filterStatus.value;
             const paymentFilter = filterPayment.value;
-            
             const rows = journalList.querySelectorAll('tr');
-            
             rows.forEach(row => {
-                const searchMatch = row.dataset.author.includes(searchTerm) || row.dataset.title.includes(searchTerm);
+                const searchMatch = row.dataset.author.includes(searchTerm) || row.dataset.title.includes(searchTerm) || row.dataset.articleNumber.includes(searchTerm);
                 const typeMatch = !typeFilter || row.dataset.type === typeFilter;
                 const journalMatch = !journalFilter || row.dataset.journal === journalFilter;
                 const statusMatch = !statusFilter || row.dataset.status === statusFilter;
                 const paymentMatch = !paymentFilter || row.dataset.payment === paymentFilter;
-
                 row.style.display = (searchMatch && typeMatch && journalMatch && statusMatch && paymentMatch) ? '' : 'none';
             });
         }
+        
+        window.openPublishUrlModal = function(id) {
+            const journalRef = ref(database, 'journals/' + id);
+            onValue(journalRef, (snapshot) => {
+                const journal = snapshot.val();
+                publishUrlInput.value = (journal && journal.publishedUrl) ? journal.publishedUrl : '';
+                publishUrlModal.dataset.id = id;
+                publishUrlModal.classList.remove('hidden');
+            }, { onlyOnce: true });
+        }
 
-        /**
-         * Opens a Google Docs template for creating a Letter of Acceptance.
-         * @param {string} journal - The name of the journal.
-         */
-        window.createLOA = function(journal) {
-            const templates = {
-                'EBISMEN': 'https://docs.google.com/document/d/your-template-id-here/copy',
-                'WAWASAN': 'https://docs.google.com/document/d/your-template-id-here/copy',
-                // Add other template URLs here, using the /copy endpoint to force a new document
-            };
-            
-            if (templates[journal]) {
-                window.open(templates[journal], '_blank');
-            } else {
-                alert('Template LoA untuk jurnal ini belum tersedia.');
+        function handleSavePublishUrl() {
+            const id = publishUrlModal.dataset.id;
+            const url = publishUrlInput.value.trim();
+
+            if (!id) return;
+            if (!url) {
+                alert('URL tidak boleh kosong.');
+                return;
+            }
+            try {
+                new URL(url);
+            } catch (_) {
+                alert('Format URL tidak valid. Pastikan menggunakan http:// atau https://');
+                return;
+            }
+
+            const journalRef = ref(database, 'journals/' + id);
+            update(journalRef, { publishedUrl: url })
+                .then(() => {
+                    publishUrlModal.classList.add('hidden');
+                    alert('URL artikel berhasil disimpan!');
+                })
+                .catch(error => {
+                    alert('Gagal menyimpan URL: ' + error.message);
+                });
+        }
+
+        window.openLoaUrlModal = function(id) {
+            const journalRef = ref(database, 'journals/' + id);
+            onValue(journalRef, (snapshot) => {
+                const journal = snapshot.val();
+                loaUrlInput.value = (journal && journal.loaUrl) ? journal.loaUrl : '';
+                loaUrlModal.dataset.id = id;
+                loaUrlModal.classList.remove('hidden');
+            }, { onlyOnce: true });
+        }
+
+        function handleSaveLoaUrl() {
+            const id = loaUrlModal.dataset.id;
+            const url = loaUrlInput.value.trim();
+
+            if (!id) return;
+            if (!url) {
+                alert('URL LoA tidak boleh kosong.');
+                return;
+            }
+             try {
+                new URL(url);
+            } catch (_) {
+                alert('Format URL tidak valid. Pastikan menggunakan http:// atau https://');
+                return;
+            }
+
+            const journalRef = ref(database, 'journals/' + id);
+            update(journalRef, { loaUrl: url })
+                .then(() => {
+                    loaUrlModal.classList.add('hidden');
+                    alert('URL LoA berhasil disimpan!');
+                })
+                .catch(error => {
+                    alert('Gagal menyimpan URL LoA: ' + error.message);
+                });
+        }
+
+        window.sendLoaViaWhatsApp = function(id) {
+            const journal = allJournalsData[id];
+            if (!journal || !journal.loaUrl || !journal.phone) {
+                alert("Data tidak lengkap (URL LoA atau No HP) untuk mengirim WhatsApp.");
+                return;
+            }
+            const phoneNumber = journal.phone.replace(/^0/, '62');
+            const message = `Yth. ${journal.authorName},\n\nBerikut adalah Letter of Acceptance (LoA) untuk artikel Anda yang berjudul "${journal.title}":\n\n${journal.loaUrl}\n\nTerima kasih.`;
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(waUrl, '_blank');
+        }
+
+        // --- Notification Functions (Browser-based) ---
+        
+        function checkNotificationPermission() {
+            const notificationBtn = document.getElementById('notificationBtn');
+            if (!('Notification' in window)) {
+                notificationBtn.style.display = 'none';
+                return;
+            }
+            if (Notification.permission === 'granted') {
+                notificationBtn.classList.remove('text-white');
+                notificationBtn.classList.add('text-green-300');
+                notificationBtn.title = "Notifikasi sudah aktif";
+            } else if (Notification.permission === 'denied') {
+                notificationBtn.classList.remove('text-white');
+                notificationBtn.classList.add('text-red-400');
+                notificationBtn.title = "Notifikasi diblokir. Izinkan di pengaturan browser.";
             }
         }
 
-        /**
-         * Initializes the date fields in the main form.
-         */
+        function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                alert('Browser ini tidak mendukung notifikasi desktop.');
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                alert('Notifikasi sudah diizinkan.');
+                return;
+            }
+            
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    console.log('Izin notifikasi diberikan.');
+                    new Notification('Jeruk Manis ATS', {
+                        body: 'Notifikasi berhasil diaktifkan!',
+                        icon: 'https://img.icons8.com/?size=100&id=XxRdzBNPGyUO&format=png&color=000000'
+                    });
+                } else {
+                    alert('Anda menolak izin notifikasi.');
+                }
+                checkNotificationPermission();
+            });
+        }
+
+        function checkDeadlinesForNotifications() {
+            if (Notification.permission !== 'granted') return;
+
+            const journals = allJournalsData;
+            if (!journals) return;
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            Object.keys(journals).forEach(key => {
+                const journal = journals[key];
+                
+                if (journal.process === 'Publish' || notifiedJournalIds.has(key)) {
+                    return;
+                }
+
+                const deadlineDate = new Date(journal.deadline);
+                const timeDiff = deadlineDate.getTime() - today.getTime();
+                const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                
+                if (daysDiff <= 2 && daysDiff >= 0) {
+                    const deadlineText = daysDiff === 0 ? 'hari ini' : `dalam ${daysDiff} hari`;
+                    const title = `🚨 Deadline Mendekat: ${journal.journalTarget}`;
+                    const body = `Artikel "${journal.title.substring(0,40)}..." oleh ${journal.authorName} akan jatuh tempo ${deadlineText}.`;
+                    
+                    new Notification(title, { body: body, icon: 'https://img.icons8.com/?size=100&id=XxRdzBNPGyUO&format=png&color=000000' });
+                    notifiedJournalIds.add(key);
+                }
+            });
+        }
+
         function initializeDateFields() {
-            const today = new Date().toISOString().split('T')[0];
-            entryDateInput.value = today;
+            const today = new Date();
+            const year = today.getFullYear();
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            entryDateInput.value = today.toISOString().split('T')[0];
+            document.getElementById('publishYear').value = year;
+            document.getElementById('publishMonth').value = monthNames[today.getMonth()];
             updateDeadline(entryDateInput, publicationTypeInput, deadlineInput);
         }
 
@@ -780,40 +1068,50 @@
         journalForm.addEventListener('submit', handleFormSubmit);
         saveEdit.addEventListener('click', handleSaveEdit);
         confirmDelete.addEventListener('click', handleDeleteConfirm);
-
-        // Modal close buttons
         cancelDelete.addEventListener('click', () => confirmModal.classList.add('hidden'));
         cancelEdit.addEventListener('click', () => editModal.classList.add('hidden'));
-
-        // Auto-deadline listeners
         entryDateInput.addEventListener('change', () => updateDeadline(entryDateInput, publicationTypeInput, deadlineInput));
         publicationTypeInput.addEventListener('change', () => updateDeadline(entryDateInput, publicationTypeInput, deadlineInput));
         editEntryDateInput.addEventListener('change', () => updateDeadline(editEntryDateInput, editPublicationTypeInput, editDeadlineInput));
         editPublicationTypeInput.addEventListener('change', () => updateDeadline(editEntryDateInput, editPublicationTypeInput, editDeadlineInput));
-        
-        // Filter listeners
         searchInput.addEventListener('input', applyFilters);
         filterType.addEventListener('change', applyFilters);
         filterJournal.addEventListener('change', applyFilters);
         filterStatus.addEventListener('change', applyFilters);
         filterPayment.addEventListener('change', applyFilters);
         resetFiltersBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            filterType.value = '';
-            filterJournal.value = '';
-            filterStatus.value = '';
-            filterPayment.value = '';
+            searchInput.value = ''; filterType.value = ''; filterJournal.value = ''; filterStatus.value = ''; filterPayment.value = '';
             applyFilters();
         });
+        savePublishUrl.addEventListener('click', handleSavePublishUrl);
+        cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
+        saveLoaUrl.addEventListener('click', handleSaveLoaUrl);
+        cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
+
+
+        // --- Notification Setup ---
+        const notificationBtn = document.getElementById('notificationBtn');
+        notificationBtn.addEventListener('click', requestNotificationPermission);
+        checkNotificationPermission();
         
+        // Check deadlines every 60 seconds
+        setInterval(checkDeadlinesForNotifications, 60000);
+
         // Initial data load from Firebase
-        journalsRef.on('value', renderJournalList, (error) => {
-            console.error("Firebase read failed: " + error.name);
-            alert("Gagal memuat data dari database. Periksa koneksi internet Anda.");
+        document.getElementById('loadingSpinner').classList.remove('hidden');
+        document.getElementById('noData').classList.add('hidden');
+        onValue(journalsRef, renderJournalList, (error) => {
+            console.error("Firebase read failed: " + error.name, error);
+            document.getElementById('loadingSpinner').classList.add('hidden');
+            const noDataElement = document.getElementById('noData');
+            noDataElement.classList.remove('hidden');
+            noDataElement.querySelector('h3').textContent = 'Gagal Memuat Data';
+            noDataElement.querySelector('p').textContent = 'Periksa koneksi internet Anda atau hubungi administrator.';
+            alert("Gagal memuat data dari database. Periksa log konsol untuk detail.");
         });
         
-        // Initialize on page load
         window.onload = initializeDateFields;
     </script>
 </body>
 </html>
+
