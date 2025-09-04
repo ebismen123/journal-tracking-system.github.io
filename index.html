@@ -557,6 +557,39 @@
             </div>
         </div>
     </div>
+    <!-- Modal for Invoice URL -->
+    <div id="invoiceUrlModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-receipt text-green-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">URL Invoice</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500 mb-2">Masukkan URL Invoice dari Google Drive atau platform lain.</p>
+                                <input type="url" id="invoiceUrlInput" placeholder="https://..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="saveInvoiceUrl" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-save mr-2"></i> Simpan URL Invoice
+                    </button>
+                    <button type="button" id="cancelInvoiceUrl" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-times mr-2"></i> Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Footer -->
@@ -636,14 +669,21 @@
         const filterStatus = document.getElementById('filterStatus');
         const filterPayment = document.getElementById('filterPayment');
         const resetFiltersBtn = document.getElementById('resetFilters');
+        
         const publishUrlModal = document.getElementById('publishUrlModal');
         const savePublishUrl = document.getElementById('savePublishUrl');
         const cancelPublishUrl = document.getElementById('cancelPublishUrl');
         const publishUrlInput = document.getElementById('publishUrlInput');
+
         const loaUrlModal = document.getElementById('loaUrlModal');
         const saveLoaUrl = document.getElementById('saveLoaUrl');
         const cancelLoaUrl = document.getElementById('cancelLoaUrl');
         const loaUrlInput = document.getElementById('loaUrlInput');
+
+        const invoiceUrlModal = document.getElementById('invoiceUrlModal');
+        const saveInvoiceUrl = document.getElementById('saveInvoiceUrl');
+        const cancelInvoiceUrl = document.getElementById('cancelInvoiceUrl');
+        const invoiceUrlInput = document.getElementById('invoiceUrlInput');
         
         // --- Functions ---
         
@@ -677,7 +717,8 @@
                 payment: document.querySelector('input[name="payment"]:checked').value,
                 createdAt: serverTimestamp(),
                 publishedUrl: "",
-                loaUrl: "" // Initialize LoA URL field
+                loaUrl: "",
+                invoiceUrl: ""
             };
             push(journalsRef, newJournalData);
             journalForm.reset();
@@ -754,24 +795,46 @@
                 deadlineCell = journal.deadline;
             }
             
+            // Published Article URL Actions
             let publishUrlAction = '';
             if (journal.process === 'Publish') {
                 if (journal.publishedUrl) {
-                    publishUrlAction = `<a href="${journal.publishedUrl}" target="_blank" class="text-green-600 hover:text-green-900" title="Lihat Artikel Terbit"><i class="fas fa-external-link-alt"></i></a>`;
+                    publishUrlAction = `
+                        <a href="${journal.publishedUrl}" target="_blank" class="text-green-600 hover:text-green-900" title="Lihat Artikel Terbit"><i class="fas fa-external-link-alt"></i></a>
+                        <button onclick="openPublishUrlModal('${key}')" class="text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
+                    `;
                 } else {
                     publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-blue-600 hover:text-blue-900" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
                 }
             }
 
+            // LoA URL Actions
             let loaActionHtml = '';
             if (journal.loaUrl) {
-                loaActionHtml = `
-                    <a href="${journal.loaUrl}" target="_blank" class="text-yellow-600 hover:text-yellow-800" title="Buka URL LoA"><i class="fas fa-award"></i></a>
-                    <button onclick="sendLoaViaWhatsApp('${key}')" class="text-green-500 hover:text-green-700" title="Kirim Link LoA via WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                 loaActionHtml = `
+                    <div class="inline-flex items-center">
+                        <a href="${journal.loaUrl}" target="_blank" class="text-yellow-600 hover:text-yellow-800" title="Buka URL LoA"><i class="fas fa-award"></i></a>
+                        <button onclick="openLoaUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL LoA"><i class="fas fa-pencil-alt text-xs"></i></button>
+                        <button onclick="sendLoaViaWhatsApp('${key}')" class="ml-2 text-green-500 hover:text-green-700" title="Kirim Info via WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                    </div>
                 `;
             } else {
-                loaActionHtml = `<button onclick="openLoaUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL LoA"><i class="fas fa-award"></i></button>`;
+                 loaActionHtml = `<button onclick="openLoaUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL LoA"><i class="fas fa-award"></i></button>`;
             }
+
+            // Invoice URL Actions
+            let invoiceActionHtml = '';
+            if (journal.invoiceUrl) {
+                 invoiceActionHtml = `
+                    <div class="inline-flex items-center">
+                         <a href="${journal.invoiceUrl}" target="_blank" class="text-green-600 hover:text-green-800" title="Buka URL Invoice"><i class="fas fa-receipt"></i></a>
+                         <button onclick="openInvoiceUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Invoice"><i class="fas fa-pencil-alt text-xs"></i></button>
+                    </div>
+                `;
+            } else {
+                 invoiceActionHtml = `<button onclick="openInvoiceUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL Invoice"><i class="fas fa-receipt"></i></button>`;
+            }
+
 
             row.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -800,10 +863,11 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div class="flex space-x-3 items-center">
-                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit Data"><i class="fas fa-edit"></i></button>
                         ${loaActionHtml}
-                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
+                        ${invoiceActionHtml}
                         ${publishUrlAction}
+                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             `;
@@ -965,15 +1029,68 @@
                     alert('Gagal menyimpan URL LoA: ' + error.message);
                 });
         }
+        
+        window.openInvoiceUrlModal = function(id) {
+            const journalRef = ref(database, 'journals/' + id);
+            onValue(journalRef, (snapshot) => {
+                const journal = snapshot.val();
+                invoiceUrlInput.value = (journal && journal.invoiceUrl) ? journal.invoiceUrl : '';
+                invoiceUrlModal.dataset.id = id;
+                invoiceUrlModal.classList.remove('hidden');
+            }, { onlyOnce: true });
+        }
+
+        function handleSaveInvoiceUrl() {
+            const id = invoiceUrlModal.dataset.id;
+            const url = invoiceUrlInput.value.trim();
+
+            if (!id) return;
+            if (!url) {
+                alert('URL Invoice tidak boleh kosong.');
+                return;
+            }
+             try {
+                new URL(url);
+            } catch (_) {
+                alert('Format URL tidak valid. Pastikan menggunakan http:// atau https://');
+                return;
+            }
+
+            const journalRef = ref(database, 'journals/' + id);
+            update(journalRef, { invoiceUrl: url })
+                .then(() => {
+                    invoiceUrlModal.classList.add('hidden');
+                    alert('URL Invoice berhasil disimpan!');
+                })
+                .catch(error => {
+                    alert('Gagal menyimpan URL Invoice: ' + error.message);
+                });
+        }
 
         window.sendLoaViaWhatsApp = function(id) {
             const journal = allJournalsData[id];
-            if (!journal || !journal.loaUrl || !journal.phone) {
-                alert("Data tidak lengkap (URL LoA atau No HP) untuk mengirim WhatsApp.");
+            if (!journal || !journal.phone) {
+                alert("No HP penulis tidak ditemukan.");
                 return;
             }
+            if (!journal.loaUrl && !journal.invoiceUrl) {
+                alert("URL LoA dan URL Invoice belum ditambahkan.");
+                return;
+            }
+
             const phoneNumber = journal.phone.replace(/^0/, '62');
-            const message = `Yth. ${journal.authorName},\n\nBerikut adalah Letter of Acceptance (LoA) untuk artikel Anda yang berjudul "${journal.title}":\n\n${journal.loaUrl}\n\nTerima kasih.`;
+            let message = `Yth. ${journal.authorName},\n\nBerikut kami sampaikan LoA (Letter of Acceptance) dari artikel yang berjudul "${journal.title}".\n`;
+            
+            if (journal.loaUrl) {
+                message += `\nLoA:\n${journal.loaUrl}\n`;
+            }
+
+            if (journal.invoiceUrl) {
+                message += `\nUntuk informasi pembayaran, silakan akses invoice pada tautan berikut:\n${journal.invoiceUrl}\n`;
+            }
+
+            message += `\nTerima kasih.\nTim Editor Jurnal ${journal.journalTarget}`;
+
             const encodedMessage = encodeURIComponent(message);
             const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
             window.open(waUrl, '_blank');
@@ -1087,6 +1204,8 @@
         cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
         saveLoaUrl.addEventListener('click', handleSaveLoaUrl);
         cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
+        saveInvoiceUrl.addEventListener('click', handleSaveInvoiceUrl);
+        cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
 
 
         // --- Notification Setup ---
