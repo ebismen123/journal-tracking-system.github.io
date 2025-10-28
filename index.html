@@ -795,27 +795,36 @@
                 deadlineCell = journal.deadline;
             }
             
-            // Published Article URL Actions
+            // Published Article URL Actions + WhatsApp Button
             let publishUrlAction = '';
+            let publishWaAction = ''; // New button for sending published info
             if (journal.process === 'Publish') {
                 if (journal.publishedUrl) {
                     publishUrlAction = `
-                        <a href="${journal.publishedUrl}" target="_blank" class="text-green-600 hover:text-green-900" title="Lihat Artikel Terbit"><i class="fas fa-external-link-alt"></i></a>
-                        <button onclick="openPublishUrlModal('${key}')" class="text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
+                        <div class="inline-flex items-center">
+                            <a href="${journal.publishedUrl}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Lihat Artikel Terbit"><i class="fas fa-link"></i></a>
+                            <button onclick="openPublishUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
+                        </div>
                     `;
+                    // Show WhatsApp button only if URL exists
+                    publishWaAction = `<button onclick="sendPublishInfoViaWhatsApp('${key}')" class="text-blue-500 hover:text-blue-700" title="Kirim Info Artikel Terbit & Pembayaran via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
                 } else {
-                    publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-blue-600 hover:text-blue-900" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
+                    publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
                 }
             }
 
-            // LoA URL Actions
+
+            // LoA URL Actions + WhatsApp Button
             let loaActionHtml = '';
-            if (journal.loaUrl) {
+            let loaWaAction = ''; // Specific WhatsApp button for LoA/Invoice
+            if (journal.loaUrl || journal.invoiceUrl) { // Check if either LoA or Invoice URL exists
+                 loaWaAction = `<button onclick="sendLoaInvoiceViaWhatsApp('${key}')" class="text-green-500 hover:text-green-700" title="Kirim Info LoA/Invoice via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
+            }
+             if (journal.loaUrl) {
                  loaActionHtml = `
                     <div class="inline-flex items-center">
                         <a href="${journal.loaUrl}" target="_blank" class="text-yellow-600 hover:text-yellow-800" title="Buka URL LoA"><i class="fas fa-award"></i></a>
                         <button onclick="openLoaUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL LoA"><i class="fas fa-pencil-alt text-xs"></i></button>
-                        <button onclick="sendLoaViaWhatsApp('${key}')" class="ml-2 text-green-500 hover:text-green-700" title="Kirim Info via WhatsApp"><i class="fab fa-whatsapp"></i></button>
                     </div>
                 `;
             } else {
@@ -862,11 +871,13 @@
                     <span class="mt-1 block px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${paymentClass}">${journal.payment}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div class="flex space-x-3 items-center">
+                    <div class="flex space-x-2 items-center justify-end">
                         <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit Data"><i class="fas fa-edit"></i></button>
                         ${loaActionHtml}
                         ${invoiceActionHtml}
+                        ${loaWaAction} <!-- WhatsApp for LoA/Invoice -->
                         ${publishUrlAction}
+                        ${publishWaAction} <!-- WhatsApp for Published Article -->
                         <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -918,6 +929,8 @@
                 deadline: document.getElementById('editDeadline').value,
                 process: document.querySelector('input[name="editProcess"]:checked').value,
                 payment: document.querySelector('input[name="editPayment"]:checked').value
+                // Keep existing URLs (loaUrl, invoiceUrl, publishedUrl) by not including them here
+                // Firebase update only modifies fields present in updatedData
             };
             update(journalRef, updatedData).then(() => {
                 editModal.classList.add('hidden');
@@ -956,62 +969,28 @@
             });
         }
         
-        window.openPublishUrlModal = function(id) {
-            const journalRef = ref(database, 'journals/' + id);
+        // --- URL Modal Functions ---
+        function openUrlModal(modalElement, inputElement, id, urlField) {
+             const journalRef = ref(database, 'journals/' + id);
             onValue(journalRef, (snapshot) => {
                 const journal = snapshot.val();
-                publishUrlInput.value = (journal && journal.publishedUrl) ? journal.publishedUrl : '';
-                publishUrlModal.dataset.id = id;
-                publishUrlModal.classList.remove('hidden');
+                inputElement.value = (journal && journal[urlField]) ? journal[urlField] : '';
+                modalElement.dataset.id = id;
+                modalElement.dataset.field = urlField; // Store which field this modal is for
+                modalElement.classList.remove('hidden');
             }, { onlyOnce: true });
         }
 
-        function handleSavePublishUrl() {
-            const id = publishUrlModal.dataset.id;
-            const url = publishUrlInput.value.trim();
+        function handleSaveUrl(modalElement, inputElement) {
+            const id = modalElement.dataset.id;
+            const field = modalElement.dataset.field;
+            const url = inputElement.value.trim();
 
-            if (!id) return;
+            if (!id || !field) return;
             if (!url) {
                 alert('URL tidak boleh kosong.');
                 return;
             }
-            try {
-                new URL(url);
-            } catch (_) {
-                alert('Format URL tidak valid. Pastikan menggunakan http:// atau https://');
-                return;
-            }
-
-            const journalRef = ref(database, 'journals/' + id);
-            update(journalRef, { publishedUrl: url })
-                .then(() => {
-                    publishUrlModal.classList.add('hidden');
-                    alert('URL artikel berhasil disimpan!');
-                })
-                .catch(error => {
-                    alert('Gagal menyimpan URL: ' + error.message);
-                });
-        }
-
-        window.openLoaUrlModal = function(id) {
-            const journalRef = ref(database, 'journals/' + id);
-            onValue(journalRef, (snapshot) => {
-                const journal = snapshot.val();
-                loaUrlInput.value = (journal && journal.loaUrl) ? journal.loaUrl : '';
-                loaUrlModal.dataset.id = id;
-                loaUrlModal.classList.remove('hidden');
-            }, { onlyOnce: true });
-        }
-
-        function handleSaveLoaUrl() {
-            const id = loaUrlModal.dataset.id;
-            const url = loaUrlInput.value.trim();
-
-            if (!id) return;
-            if (!url) {
-                alert('URL LoA tidak boleh kosong.');
-                return;
-            }
              try {
                 new URL(url);
             } catch (_) {
@@ -1020,54 +999,37 @@
             }
 
             const journalRef = ref(database, 'journals/' + id);
-            update(journalRef, { loaUrl: url })
+            const updateData = {};
+            updateData[field] = url; // Dynamically set the field to update
+
+            update(journalRef, updateData)
                 .then(() => {
-                    loaUrlModal.classList.add('hidden');
-                    alert('URL LoA berhasil disimpan!');
+                    modalElement.classList.add('hidden');
+                    alert(`URL ${field.replace('Url','')} berhasil disimpan!`);
                 })
                 .catch(error => {
-                    alert('Gagal menyimpan URL LoA: ' + error.message);
+                    alert(`Gagal menyimpan URL ${field.replace('Url','')}: ${error.message}`);
                 });
         }
+
+        // --- Specific URL Modal Openers ---
+        window.openPublishUrlModal = (id) => openUrlModal(publishUrlModal, publishUrlInput, id, 'publishedUrl');
+        window.openLoaUrlModal = (id) => openUrlModal(loaUrlModal, loaUrlInput, id, 'loaUrl');
+        window.openInvoiceUrlModal = (id) => openUrlModal(invoiceUrlModal, invoiceUrlInput, id, 'invoiceUrl');
         
-        window.openInvoiceUrlModal = function(id) {
-            const journalRef = ref(database, 'journals/' + id);
-            onValue(journalRef, (snapshot) => {
-                const journal = snapshot.val();
-                invoiceUrlInput.value = (journal && journal.invoiceUrl) ? journal.invoiceUrl : '';
-                invoiceUrlModal.dataset.id = id;
-                invoiceUrlModal.classList.remove('hidden');
-            }, { onlyOnce: true });
-        }
+        // --- Specific URL Modal Savers ---
+        savePublishUrl.addEventListener('click', () => handleSaveUrl(publishUrlModal, publishUrlInput));
+        saveLoaUrl.addEventListener('click', () => handleSaveUrl(loaUrlModal, loaUrlInput));
+        saveInvoiceUrl.addEventListener('click', () => handleSaveUrl(invoiceUrlModal, invoiceUrlInput));
 
-        function handleSaveInvoiceUrl() {
-            const id = invoiceUrlModal.dataset.id;
-            const url = invoiceUrlInput.value.trim();
+        // --- Specific URL Modal Cancellers ---
+        cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
+        cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
+        cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
 
-            if (!id) return;
-            if (!url) {
-                alert('URL Invoice tidak boleh kosong.');
-                return;
-            }
-             try {
-                new URL(url);
-            } catch (_) {
-                alert('Format URL tidak valid. Pastikan menggunakan http:// atau https://');
-                return;
-            }
 
-            const journalRef = ref(database, 'journals/' + id);
-            update(journalRef, { invoiceUrl: url })
-                .then(() => {
-                    invoiceUrlModal.classList.add('hidden');
-                    alert('URL Invoice berhasil disimpan!');
-                })
-                .catch(error => {
-                    alert('Gagal menyimpan URL Invoice: ' + error.message);
-                });
-        }
-
-        window.sendLoaViaWhatsApp = function(id) {
+        // --- WhatsApp Functions ---
+        window.sendLoaInvoiceViaWhatsApp = function(id) { // Renamed for clarity
             const journal = allJournalsData[id];
             if (!journal || !journal.phone) {
                 alert("No HP penulis tidak ditemukan.");
@@ -1095,6 +1057,36 @@
             const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
             window.open(waUrl, '_blank');
         }
+
+        window.sendPublishInfoViaWhatsApp = function(id) { // New function
+            const journal = allJournalsData[id];
+            if (!journal || !journal.phone) {
+                alert("No HP penulis tidak ditemukan.");
+                return;
+            }
+            if (!journal.publishedUrl) {
+                alert("URL Artikel Terbit belum ditambahkan.");
+                return;
+            }
+
+            const phoneNumber = journal.phone.replace(/^0/, '62');
+            let message = `Yth. ${journal.authorName},\n\nArtikel Anda yang berjudul "${journal.title}" telah terbit.\n`;
+            message += `\nLink Artikel:\n${journal.publishedUrl}\n`;
+
+            // Add payment info only if not paid yet
+            if (journal.payment === 'Belum Bayar') {
+                message += `\nSelanjutnya, mohon dapat menyelesaikan administrasi pembayaran melalui:\n`;
+                message += `- DANA: 089667747299\n`;
+                message += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n`;
+            }
+
+            message += `\nTerima kasih.\nTim Editor Jurnal ${journal.journalTarget}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(waUrl, '_blank');
+        }
+
 
         // --- Notification Functions (Browser-based) ---
         
@@ -1200,13 +1192,6 @@
             searchInput.value = ''; filterType.value = ''; filterJournal.value = ''; filterStatus.value = ''; filterPayment.value = '';
             applyFilters();
         });
-        savePublishUrl.addEventListener('click', handleSavePublishUrl);
-        cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
-        saveLoaUrl.addEventListener('click', handleSaveLoaUrl);
-        cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
-        saveInvoiceUrl.addEventListener('click', handleSaveInvoiceUrl);
-        cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
-
 
         // --- Notification Setup ---
         const notificationBtn = document.getElementById('notificationBtn');
@@ -1233,4 +1218,5 @@
     </script>
 </body>
 </html>
+
 
