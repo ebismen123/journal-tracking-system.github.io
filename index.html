@@ -126,8 +126,8 @@
                     <div>
                         <label for="publicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
                         <select id="publicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                            <option value="Reguler">Reguler (8 Hari)</option>
-                            <option value="Fast Track">Fast Track (2 Hari)</option>
+                            <option value="Reguler">Reguler (8 Hari) - 100rb</option>
+                            <option value="Fast Track">Fast Track (2 Hari) - 200rb</option>
                         </select>
                     </div>
                     
@@ -193,6 +193,21 @@
                             <div class="flex items-center">
                                 <input id="notPaid" name="payment" type="radio" value="Belum Bayar" checked class="h-4 w-4 text-orange-600 focus:ring-orange-500">
                                 <label for="notPaid" class="ml-2 block text-sm text-gray-700">Belum Bayar</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing Timing Option -->
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700">Waktu Penagihan</label>
+                        <div class="mt-2 space-y-2">
+                            <div class="flex items-center">
+                                <input id="billNow" name="billingTiming" type="radio" value="Sekarang" checked class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                <label for="billNow" class="ml-2 block text-sm text-gray-700">Sekarang</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="billLater" name="billingTiming" type="radio" value="Nanti" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                <label for="billLater" class="ml-2 block text-sm text-gray-700">Nanti</label>
                             </div>
                         </div>
                     </div>
@@ -376,8 +391,8 @@
                             <div class="mb-4">
                                 <label for="editPublicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
                                 <select id="editPublicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                                    <option value="Reguler">Reguler (8 Hari)</option>
-                                    <option value="Fast Track">Fast Track (2 Hari)</option>
+                                    <option value="Reguler">Reguler (8 Hari) - 100rb</option>
+                                    <option value="Fast Track">Fast Track (2 Hari) - 200rb</option>
                                 </select>
                             </div>
                             
@@ -443,6 +458,21 @@
                                     <div class="flex items-center">
                                         <input id="editNotPaid" name="editPayment" type="radio" value="Belum Bayar" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
                                         <label for="editNotPaid" class="ml-2 block text-sm text-gray-700">Belum Bayar</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <!-- NEW Billing Timing Option for Edit -->
+                             <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Waktu Penagihan</label>
+                                <div class="mt-2 space-y-2">
+                                    <div class="flex items-center">
+                                        <input id="editBillNow" name="editBillingTiming" type="radio" value="Sekarang" checked class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editBillNow" class="ml-2 block text-sm text-gray-700">Sekarang</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="editBillLater" name="editBillingTiming" type="radio" value="Nanti" class="h-4 w-4 text-orange-600 focus:ring-orange-500">
+                                        <label for="editBillLater" class="ml-2 block text-sm text-gray-700">Nanti</label>
                                     </div>
                                 </div>
                             </div>
@@ -715,6 +745,7 @@
                 deadline: document.getElementById('deadline').value,
                 process: document.querySelector('input[name="process"]:checked').value,
                 payment: document.querySelector('input[name="payment"]:checked').value,
+                billingTiming: document.querySelector('input[name="billingTiming"]:checked').value, // Add billingTiming
                 createdAt: serverTimestamp(),
                 publishedUrl: "",
                 loaUrl: "",
@@ -724,6 +755,7 @@
             journalForm.reset();
             document.getElementById('notSubmitted').checked = true;
             document.getElementById('notPaid').checked = true;
+            document.getElementById('billNow').checked = true; // Reset billing timing to default
             initializeDateFields();
             alert('Data jurnal berhasil disimpan!');
         }
@@ -802,7 +834,7 @@
                 if (journal.publishedUrl) {
                     publishUrlAction = `
                         <div class="inline-flex items-center">
-                            <a href="${journal.publishedUrl}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Lihat Artikel Terbit"><i class="fas fa-link"></i></a>
+                            <a href="${journal.publishedUrl}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Lihat Artikel Terbit"><i class="fas fa-external-link-alt"></i></a>
                             <button onclick="openPublishUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
                         </div>
                     `;
@@ -906,6 +938,12 @@
                 document.getElementById('editDeadline').value = journal.deadline;
                 document.querySelector(`input[name="editProcess"][value="${journal.process}"]`).checked = true;
                 document.querySelector(`input[name="editPayment"][value="${journal.payment}"]`).checked = true;
+                
+                // Set billing timing value in edit modal
+                const billingTimingValue = journal.billingTiming || "Sekarang"; // Default if not set
+                const billingRadio = document.querySelector(`input[name="editBillingTiming"][value="${billingTimingValue}"]`);
+                if (billingRadio) billingRadio.checked = true;
+                
                 editModal.classList.remove('hidden');
             }, { onlyOnce: true });
         }
@@ -928,7 +966,8 @@
                 journalTarget: document.getElementById('editJournalTarget').value,
                 deadline: document.getElementById('editDeadline').value,
                 process: document.querySelector('input[name="editProcess"]:checked').value,
-                payment: document.querySelector('input[name="editPayment"]:checked').value
+                payment: document.querySelector('input[name="editPayment"]:checked').value,
+                billingTiming: document.querySelector('input[name="editBillingTiming"]:checked').value // Save billing timing from edit
                 // Keep existing URLs (loaUrl, invoiceUrl, publishedUrl) by not including them here
                 // Firebase update only modifies fields present in updatedData
             };
@@ -1027,6 +1066,18 @@
         cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
         cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
 
+        // --- Defined Functions for Event Listeners ---
+        function handleSavePublishUrl() {
+            handleSaveUrl(publishUrlModal, publishUrlInput);
+        }
+
+        function handleSaveLoaUrl() {
+            handleSaveUrl(loaUrlModal, loaUrlInput);
+        }
+
+        function handleSaveInvoiceUrl() {
+            handleSaveUrl(invoiceUrlModal, invoiceUrlInput);
+        }
 
         // --- WhatsApp Functions ---
         window.sendLoaInvoiceViaWhatsApp = function(id) { // Renamed for clarity
@@ -1051,6 +1102,15 @@
                 message += `\nUntuk informasi pembayaran, silakan akses invoice pada tautan berikut:\n${journal.invoiceUrl}\n`;
             }
 
+            // Logic for 'Sekarang' Billing Timing inside sendLoaInvoiceViaWhatsApp
+            if (journal.payment === 'Belum Bayar' && journal.billingTiming === 'Sekarang') {
+                const price = journal.publicationType === 'Fast Track' ? '200.000' : '100.000';
+                message += `\nSelanjutnya, mohon dapat menyelesaikan administrasi pembayaran sebesar Rp ${price} melalui:\n`;
+                message += `- DANA: 089667747299\n`;
+                message += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n`;
+            }
+
+
             message += `\nTerima kasih.\nTim Editor Jurnal ${journal.journalTarget}`;
 
             const encodedMessage = encodeURIComponent(message);
@@ -1073,9 +1133,11 @@
             let message = `Yth. ${journal.authorName},\n\nArtikel Anda yang berjudul "${journal.title}" telah terbit.\n`;
             message += `\nLink Artikel:\n${journal.publishedUrl}\n`;
 
-            // Add payment info only if not paid yet
-            if (journal.payment === 'Belum Bayar') {
-                message += `\nSelanjutnya, mohon dapat menyelesaikan administrasi pembayaran melalui:\n`;
+            // Logic for 'Nanti' Billing Timing inside sendPublishInfoViaWhatsApp (implicitly NOT 'Sekarang', or specifically 'Nanti')
+            // If the user chose 'Nanti', they expect to bill at publish time.
+            if (journal.payment === 'Belum Bayar' && journal.billingTiming === 'Nanti') {
+                const price = journal.publicationType === 'Fast Track' ? '200.000' : '100.000';
+                message += `\nSelanjutnya, mohon dapat menyelesaikan administrasi pembayaran sebesar Rp ${price} melalui:\n`;
                 message += `- DANA: 089667747299\n`;
                 message += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n`;
             }
@@ -1192,6 +1254,13 @@
             searchInput.value = ''; filterType.value = ''; filterJournal.value = ''; filterStatus.value = ''; filterPayment.value = '';
             applyFilters();
         });
+        savePublishUrl.addEventListener('click', handleSavePublishUrl);
+        cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
+        saveLoaUrl.addEventListener('click', handleSaveLoaUrl);
+        cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
+        saveInvoiceUrl.addEventListener('click', handleSaveInvoiceUrl);
+        cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
+
 
         // --- Notification Setup ---
         const notificationBtn = document.getElementById('notificationBtn');
@@ -1218,5 +1287,3 @@
     </script>
 </body>
 </html>
-
-
