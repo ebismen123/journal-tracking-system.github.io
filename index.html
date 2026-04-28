@@ -34,7 +34,6 @@
 </head>
 <body class="min-h-screen bg-gray-50" style="background-image: url('https://img.freepik.com/premium-vector/seamless-pattern-with-white-outline-oranges-fruit-citrus-orange-color-background_528213-749.jpg'); background-size: 500px; background-repeat: repeat;">
 
-    <!-- Header with Logo -->
     <header class="orange-gradient text-white py-3 px-4 shadow-lg sticky top-0 z-40">
         <div class="container mx-auto flex items-center justify-between">
             <div class="flex items-center">
@@ -50,10 +49,8 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto py-8 px-4">
         <div class="flex flex-col lg:flex-row gap-8">
-            <!-- Form Section -->
             <section class="w-full lg:w-1/3 bg-white rounded-xl shadow-lg orange-border p-6 h-fit">
                 <h2 class="text-2xl font-bold mb-6 orange-text-gradient">Journal Submission Form</h2>
                 
@@ -123,12 +120,18 @@
                         <input type="tel" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                     </div>
 
-                    <div>
-                        <label for="publicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
-                        <select id="publicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                            <option value="Reguler">Reguler (8 Hari) - 100rb</option>
-                            <option value="Fast Track">Fast Track (2 Hari) - 200rb</option>
-                        </select>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="publicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
+                            <select id="publicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                <option value="Reguler">Reguler (8 Hari)</option>
+                                <option value="Fast Track">Fast Track (2 Hari)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="apcAmount" class="block text-sm font-medium text-gray-700">Biaya Publikasi (Rp)</label>
+                            <input type="number" id="apcAmount" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border" placeholder="100000">
+                        </div>
                     </div>
                     
                     <div>
@@ -197,7 +200,6 @@
                         </div>
                     </div>
 
-                    <!-- Billing Timing Option -->
                      <div>
                         <label class="block text-sm font-medium text-gray-700">Waktu Penagihan</label>
                         <div class="mt-2 space-y-2">
@@ -220,7 +222,6 @@
                 </form>
             </section>
             
-            <!-- Report Section -->
             <section class="w-full lg:w-2/3">
                 <div class="bg-white rounded-xl shadow-lg orange-border p-6">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -231,7 +232,6 @@
                         </div>
                     </div>
 
-                    <!-- Filters -->
                     <div class="space-y-4 mb-4">
                         <div class="relative">
                             <input type="text" id="searchInput" placeholder="Cari berdasarkan nama, judul, atau nomor artikel..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
@@ -290,7 +290,6 @@
                                 </tr>
                             </thead>
                             <tbody id="journalList" class="bg-white divide-y divide-gray-200">
-                                <!-- Data will be inserted here by JavaScript -->
                             </tbody>
                         </table>
                     </div>
@@ -388,12 +387,18 @@
                                 <input type="tel" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                             </div>
 
-                            <div class="mb-4">
-                                <label for="editPublicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
-                                <select id="editPublicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                                    <option value="Reguler">Reguler (8 Hari) - 100rb</option>
-                                    <option value="Fast Track">Fast Track (2 Hari) - 200rb</option>
-                                </select>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="editPublicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
+                                    <select id="editPublicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                        <option value="Reguler">Reguler (8 Hari)</option>
+                                        <option value="Fast Track">Fast Track (2 Hari)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="editApcAmount" class="block text-sm font-medium text-gray-700">Biaya Publikasi (Rp)</label>
+                                    <input type="number" id="editApcAmount" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                </div>
                             </div>
                             
                             <div class="mb-4">
@@ -462,7 +467,6 @@
                                 </div>
                             </div>
 
-                             <!-- NEW Billing Timing Option for Edit -->
                              <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Waktu Penagihan</label>
                                 <div class="mt-2 space-y-2">
@@ -490,6 +494,7 @@
             </div>
         </div>
     </div>
+    
     <div id="confirmModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -521,7 +526,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal for Publish URL -->
+    
     <div id="publishUrlModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -554,7 +559,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal for LoA URL -->
+    
     <div id="loaUrlModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -587,7 +592,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal for Invoice URL -->
+    
     <div id="invoiceUrlModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -621,8 +626,6 @@
         </div>
     </div>
 
-
-    <!-- Footer -->
     <footer class="bg-orange-900 text-white py-6 mt-8">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -646,17 +649,15 @@
                 </div>
             </div>
             <div class="border-t border-orange-800 mt-4 pt-4 text-center text-orange-300 text-sm">
-                &copy; 2025 Jeruk Manis ATS - Journal Tracker. All rights reserved.
+                &copy; 2026 Jeruk Manis ATS - Journal Tracker. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Using Firebase v9+ modular SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, update, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAA5ylO4TMtGnnPhrm1vGUDF6AafNSrOUQ",
             authDomain: "orange-journal-tracker.firebaseapp.com",
@@ -667,16 +668,13 @@
             appId: "1:430973783779:web:bc1ccf3b75ce8144fcffd6"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const journalsRef = ref(database, 'journals');
 
-        // --- Global Variables ---
         let allJournalsData = {};
         const notifiedJournalIds = new Set();
 
-        // --- DOM Elements ---
         const journalForm = document.getElementById('journalForm');
         const journalList = document.getElementById('journalList');
         const noData = document.getElementById('noData');
@@ -715,8 +713,6 @@
         const cancelInvoiceUrl = document.getElementById('cancelInvoiceUrl');
         const invoiceUrlInput = document.getElementById('invoiceUrlInput');
         
-        // --- Functions ---
-        
         function updateDeadline(entryDateElem, publicationTypeElem, deadlineElem) {
             const entryDateValue = entryDateElem.value;
             if (!entryDateValue) return;
@@ -741,11 +737,12 @@
                 publishYear: document.getElementById('publishYear').value,
                 phone: document.getElementById('phone').value,
                 publicationType: document.getElementById('publicationType').value,
+                apcAmount: document.getElementById('apcAmount').value,
                 journalTarget: document.getElementById('journalTarget').value,
                 deadline: document.getElementById('deadline').value,
                 process: document.querySelector('input[name="process"]:checked').value,
                 payment: document.querySelector('input[name="payment"]:checked').value,
-                billingTiming: document.querySelector('input[name="billingTiming"]:checked').value, // Add billingTiming
+                billingTiming: document.querySelector('input[name="billingTiming"]:checked').value,
                 createdAt: serverTimestamp(),
                 publishedUrl: "",
                 loaUrl: "",
@@ -755,7 +752,7 @@
             journalForm.reset();
             document.getElementById('notSubmitted').checked = true;
             document.getElementById('notPaid').checked = true;
-            document.getElementById('billNow').checked = true; // Reset billing timing to default
+            document.getElementById('billNow').checked = true;
             initializeDateFields();
             alert('Data jurnal berhasil disimpan!');
         }
@@ -827,29 +824,25 @@
                 deadlineCell = journal.deadline;
             }
             
-            // Published Article URL Actions + WhatsApp Button
             let publishUrlAction = '';
-            let publishWaAction = ''; // New button for sending published info
+            let publishWaAction = ''; 
             if (journal.process === 'Publish') {
                 if (journal.publishedUrl) {
                     publishUrlAction = `
                         <div class="inline-flex items-center">
-                            <a href="${journal.publishedUrl}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Lihat Artikel Terbit"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="${journal.publishedUrl}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Lihat Artikel Terbit"><i class="fas fa-link"></i></a>
                             <button onclick="openPublishUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
                         </div>
                     `;
-                    // Show WhatsApp button only if URL exists
                     publishWaAction = `<button onclick="sendPublishInfoViaWhatsApp('${key}')" class="text-blue-500 hover:text-blue-700" title="Kirim Info Artikel Terbit & Pembayaran via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
                 } else {
                     publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
                 }
             }
 
-
-            // LoA URL Actions + WhatsApp Button
             let loaActionHtml = '';
-            let loaWaAction = ''; // Specific WhatsApp button for LoA/Invoice
-            if (journal.loaUrl || journal.invoiceUrl) { // Check if either LoA or Invoice URL exists
+            let loaWaAction = ''; 
+            if (journal.loaUrl || journal.invoiceUrl) { 
                  loaWaAction = `<button onclick="sendLoaInvoiceViaWhatsApp('${key}')" class="text-green-500 hover:text-green-700" title="Kirim Info LoA/Invoice via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
             }
              if (journal.loaUrl) {
@@ -863,7 +856,6 @@
                  loaActionHtml = `<button onclick="openLoaUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL LoA"><i class="fas fa-award"></i></button>`;
             }
 
-            // Invoice URL Actions
             let invoiceActionHtml = '';
             if (journal.invoiceUrl) {
                  invoiceActionHtml = `
@@ -875,7 +867,6 @@
             } else {
                  invoiceActionHtml = `<button onclick="openInvoiceUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL Invoice"><i class="fas fa-receipt"></i></button>`;
             }
-
 
             row.innerHTML = `
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -907,9 +898,9 @@
                         <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit Data"><i class="fas fa-edit"></i></button>
                         ${loaActionHtml}
                         ${invoiceActionHtml}
-                        ${loaWaAction} <!-- WhatsApp for LoA/Invoice -->
+                        ${loaWaAction}
                         ${publishUrlAction}
-                        ${publishWaAction} <!-- WhatsApp for Published Article -->
+                        ${publishWaAction}
                         <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
@@ -934,13 +925,13 @@
                 document.getElementById('editPublishYear').value = journal.publishYear || new Date().getFullYear();
                 document.getElementById('editPhone').value = journal.phone;
                 document.getElementById('editPublicationType').value = journal.publicationType || 'Reguler';
+                document.getElementById('editApcAmount').value = journal.apcAmount || '';
                 document.getElementById('editJournalTarget').value = journal.journalTarget;
                 document.getElementById('editDeadline').value = journal.deadline;
                 document.querySelector(`input[name="editProcess"][value="${journal.process}"]`).checked = true;
                 document.querySelector(`input[name="editPayment"][value="${journal.payment}"]`).checked = true;
                 
-                // Set billing timing value in edit modal
-                const billingTimingValue = journal.billingTiming || "Sekarang"; // Default if not set
+                const billingTimingValue = journal.billingTiming || "Sekarang";
                 const billingRadio = document.querySelector(`input[name="editBillingTiming"][value="${billingTimingValue}"]`);
                 if (billingRadio) billingRadio.checked = true;
                 
@@ -963,13 +954,12 @@
                 publishYear: document.getElementById('editPublishYear').value,
                 phone: document.getElementById('editPhone').value,
                 publicationType: document.getElementById('editPublicationType').value,
+                apcAmount: document.getElementById('editApcAmount').value,
                 journalTarget: document.getElementById('editJournalTarget').value,
                 deadline: document.getElementById('editDeadline').value,
                 process: document.querySelector('input[name="editProcess"]:checked').value,
                 payment: document.querySelector('input[name="editPayment"]:checked').value,
-                billingTiming: document.querySelector('input[name="editBillingTiming"]:checked').value // Save billing timing from edit
-                // Keep existing URLs (loaUrl, invoiceUrl, publishedUrl) by not including them here
-                // Firebase update only modifies fields present in updatedData
+                billingTiming: document.querySelector('input[name="editBillingTiming"]:checked').value 
             };
             update(journalRef, updatedData).then(() => {
                 editModal.classList.add('hidden');
@@ -1008,14 +998,13 @@
             });
         }
         
-        // --- URL Modal Functions ---
         function openUrlModal(modalElement, inputElement, id, urlField) {
              const journalRef = ref(database, 'journals/' + id);
             onValue(journalRef, (snapshot) => {
                 const journal = snapshot.val();
                 inputElement.value = (journal && journal[urlField]) ? journal[urlField] : '';
                 modalElement.dataset.id = id;
-                modalElement.dataset.field = urlField; // Store which field this modal is for
+                modalElement.dataset.field = urlField; 
                 modalElement.classList.remove('hidden');
             }, { onlyOnce: true });
         }
@@ -1039,7 +1028,7 @@
 
             const journalRef = ref(database, 'journals/' + id);
             const updateData = {};
-            updateData[field] = url; // Dynamically set the field to update
+            updateData[field] = url; 
 
             update(journalRef, updateData)
                 .then(() => {
@@ -1051,36 +1040,23 @@
                 });
         }
 
-        // --- Specific URL Modal Openers ---
         window.openPublishUrlModal = (id) => openUrlModal(publishUrlModal, publishUrlInput, id, 'publishedUrl');
         window.openLoaUrlModal = (id) => openUrlModal(loaUrlModal, loaUrlInput, id, 'loaUrl');
         window.openInvoiceUrlModal = (id) => openUrlModal(invoiceUrlModal, invoiceUrlInput, id, 'invoiceUrl');
         
-        // --- Specific URL Modal Savers ---
-        savePublishUrl.addEventListener('click', () => handleSaveUrl(publishUrlModal, publishUrlInput));
-        saveLoaUrl.addEventListener('click', () => handleSaveUrl(loaUrlModal, loaUrlInput));
-        saveInvoiceUrl.addEventListener('click', () => handleSaveUrl(invoiceUrlModal, invoiceUrlInput));
+        function handleSavePublishUrl() { handleSaveUrl(publishUrlModal, publishUrlInput); }
+        function handleSaveLoaUrl() { handleSaveUrl(loaUrlModal, loaUrlInput); }
+        function handleSaveInvoiceUrl() { handleSaveUrl(invoiceUrlModal, invoiceUrlInput); }
 
-        // --- Specific URL Modal Cancellers ---
+        savePublishUrl.addEventListener('click', handleSavePublishUrl);
+        saveLoaUrl.addEventListener('click', handleSaveLoaUrl);
+        saveInvoiceUrl.addEventListener('click', handleSaveInvoiceUrl);
+
         cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
         cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
         cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
 
-        // --- Defined Functions for Event Listeners ---
-        function handleSavePublishUrl() {
-            handleSaveUrl(publishUrlModal, publishUrlInput);
-        }
-
-        function handleSaveLoaUrl() {
-            handleSaveUrl(loaUrlModal, loaUrlInput);
-        }
-
-        function handleSaveInvoiceUrl() {
-            handleSaveUrl(invoiceUrlModal, invoiceUrlInput);
-        }
-
-        // --- WhatsApp Functions ---
-        window.sendLoaInvoiceViaWhatsApp = function(id) { // Renamed for clarity
+        window.sendLoaInvoiceViaWhatsApp = function(id) { 
             const journal = allJournalsData[id];
             if (!journal || !journal.phone) {
                 alert("No HP penulis tidak ditemukan.");
@@ -1102,14 +1078,12 @@
                 message += `\nUntuk informasi pembayaran, silakan akses invoice pada tautan berikut:\n${journal.invoiceUrl}\n`;
             }
 
-            // Logic for 'Sekarang' Billing Timing inside sendLoaInvoiceViaWhatsApp
             if (journal.payment === 'Belum Bayar' && journal.billingTiming === 'Sekarang') {
-                const price = journal.publicationType === 'Fast Track' ? '200.000' : '100.000';
+                const price = Number(journal.apcAmount || 0).toLocaleString('id-ID');
                 message += `\nSelanjutnya, mohon dapat menyelesaikan administrasi pembayaran sebesar Rp ${price} melalui:\n`;
                 message += `- DANA: 089667747299\n`;
                 message += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n`;
             }
-
 
             message += `\nTerima kasih.\nTim Editor Jurnal ${journal.journalTarget}`;
 
@@ -1118,7 +1092,7 @@
             window.open(waUrl, '_blank');
         }
 
-        window.sendPublishInfoViaWhatsApp = function(id) { // New function
+        window.sendPublishInfoViaWhatsApp = function(id) { 
             const journal = allJournalsData[id];
             if (!journal || !journal.phone) {
                 alert("No HP penulis tidak ditemukan.");
@@ -1133,10 +1107,8 @@
             let message = `Yth. ${journal.authorName},\n\nArtikel Anda yang berjudul "${journal.title}" telah terbit.\n`;
             message += `\nLink Artikel:\n${journal.publishedUrl}\n`;
 
-            // Logic for 'Nanti' Billing Timing inside sendPublishInfoViaWhatsApp (implicitly NOT 'Sekarang', or specifically 'Nanti')
-            // If the user chose 'Nanti', they expect to bill at publish time.
             if (journal.payment === 'Belum Bayar' && journal.billingTiming === 'Nanti') {
-                const price = journal.publicationType === 'Fast Track' ? '200.000' : '100.000';
+                const price = Number(journal.apcAmount || 0).toLocaleString('id-ID');
                 message += `\nSelanjutnya, mohon dapat menyelesaikan administrasi pembayaran sebesar Rp ${price} melalui:\n`;
                 message += `- DANA: 089667747299\n`;
                 message += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n`;
@@ -1148,9 +1120,6 @@
             const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
             window.open(waUrl, '_blank');
         }
-
-
-        // --- Notification Functions (Browser-based) ---
         
         function checkNotificationPermission() {
             const notificationBtn = document.getElementById('notificationBtn');
@@ -1235,7 +1204,6 @@
             updateDeadline(entryDateInput, publicationTypeInput, deadlineInput);
         }
 
-        // --- Event Listeners ---
         journalForm.addEventListener('submit', handleFormSubmit);
         saveEdit.addEventListener('click', handleSaveEdit);
         confirmDelete.addEventListener('click', handleDeleteConfirm);
@@ -1254,23 +1222,13 @@
             searchInput.value = ''; filterType.value = ''; filterJournal.value = ''; filterStatus.value = ''; filterPayment.value = '';
             applyFilters();
         });
-        savePublishUrl.addEventListener('click', handleSavePublishUrl);
-        cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
-        saveLoaUrl.addEventListener('click', handleSaveLoaUrl);
-        cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
-        saveInvoiceUrl.addEventListener('click', handleSaveInvoiceUrl);
-        cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
 
-
-        // --- Notification Setup ---
         const notificationBtn = document.getElementById('notificationBtn');
         notificationBtn.addEventListener('click', requestNotificationPermission);
         checkNotificationPermission();
         
-        // Check deadlines every 60 seconds
         setInterval(checkDeadlinesForNotifications, 60000);
 
-        // Initial data load from Firebase
         document.getElementById('loadingSpinner').classList.remove('hidden');
         document.getElementById('noData').classList.add('hidden');
         onValue(journalsRef, renderJournalList, (error) => {
