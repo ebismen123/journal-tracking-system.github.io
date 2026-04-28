@@ -117,15 +117,15 @@
                     
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">No HP</label>
-                        <input type="tel" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                        <input type="text" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label for="publicationType" class="block text-sm font-medium text-gray-700">Jenis Publikasi</label>
                             <select id="publicationType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
-                                <option value="Reguler">Reguler (8 Hari)</option>
-                                <option value="Fast Track">Fast Track (2 Hari)</option>
+                                <option value="Reguler">Reguler (8 Hari) - 100rb</option>
+                                <option value="Fast Track">Fast Track (2 Hari) - 200rb</option>
                             </select>
                         </div>
                         <div>
@@ -384,7 +384,7 @@
                             
                             <div class="mb-4">
                                 <label for="editPhone" class="block text-sm font-medium text-gray-700">No HP</label>
-                                <input type="tel" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                                <input type="text" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                             </div>
 
                             <div class="grid grid-cols-2 gap-4 mb-4">
@@ -1067,7 +1067,7 @@
                 return;
             }
 
-            const phoneNumber = journal.phone.replace(/^0/, '62');
+            const phoneNumber = journal.phone;
             let message = `Yth. ${journal.authorName},\n\nBerikut kami sampaikan LoA (Letter of Acceptance) dari artikel yang berjudul "${journal.title}".\n`;
             
             if (journal.loaUrl) {
@@ -1103,7 +1103,7 @@
                 return;
             }
 
-            const phoneNumber = journal.phone.replace(/^0/, '62');
+            const phoneNumber = journal.phone;
             let message = `Yth. ${journal.authorName},\n\nArtikel Anda yang berjudul "${journal.title}" telah terbit.\n`;
             message += `\nLink Artikel:\n${journal.publishedUrl}\n`;
 
@@ -1203,6 +1203,19 @@
             document.getElementById('publishMonth').value = monthNames[today.getMonth()];
             updateDeadline(entryDateInput, publicationTypeInput, deadlineInput);
         }
+
+        // Format nomor HP otomatis
+        function formatPhoneNumber(e) {
+            let val = e.target.value;
+            let cleaned = val.replace(/\D/g, '');
+            if (cleaned.startsWith('0')) {
+                cleaned = '62' + cleaned.substring(1);
+            }
+            e.target.value = cleaned;
+        }
+
+        document.getElementById('phone').addEventListener('input', formatPhoneNumber);
+        document.getElementById('editPhone').addEventListener('input', formatPhoneNumber);
 
         journalForm.addEventListener('submit', handleFormSubmit);
         saveEdit.addEventListener('click', handleSaveEdit);
