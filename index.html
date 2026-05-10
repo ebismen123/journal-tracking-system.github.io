@@ -64,7 +64,17 @@
                         <label for="authorName" class="block text-sm font-medium text-gray-700">Nama Penulis</label>
                         <input type="text" id="authorName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                     </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Koresponden</label>
+                        <input type="email" id="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                    </div>
                     
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700">No HP</label>
+                        <input type="text" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                    </div>
+
                     <div>
                         <label for="affiliation" class="block text-sm font-medium text-gray-700">Afiliasi</label>
                         <input type="text" id="affiliation" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
@@ -111,13 +121,8 @@
                         </div>
                         <div>
                             <label for="publishYear" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
-                            <input type="number" id="publishYear" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border" placeholder="2025">
+                            <input type="number" id="publishYear" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border" placeholder="2026">
                         </div>
-                    </div>
-                    
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700">No HP</label>
-                        <input type="text" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -331,7 +336,17 @@
                                 <label for="editAuthorName" class="block text-sm font-medium text-gray-700">Nama Penulis</label>
                                 <input type="text" id="editAuthorName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                             </div>
+
+                            <div class="mb-4">
+                                <label for="editEmail" class="block text-sm font-medium text-gray-700">Email Koresponden</label>
+                                <input type="email" id="editEmail" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
                             
+                            <div class="mb-4">
+                                <label for="editPhone" class="block text-sm font-medium text-gray-700">No HP</label>
+                                <input type="text" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
+                            </div>
+
                             <div class="mb-4">
                                 <label for="editAffiliation" class="block text-sm font-medium text-gray-700">Afiliasi</label>
                                 <input type="text" id="editAffiliation" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
@@ -380,11 +395,6 @@
                                     <label for="editPublishYear" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
                                     <input type="number" id="editPublishYear" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border" placeholder="2025">
                                 </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label for="editPhone" class="block text-sm font-medium text-gray-700">No HP</label>
-                                <input type="text" id="editPhone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 p-2 border">
                             </div>
 
                             <div class="grid grid-cols-2 gap-4 mb-4">
@@ -728,6 +738,7 @@
             const newJournalData = {
                 entryDate: document.getElementById('entryDate').value,
                 authorName: document.getElementById('authorName').value,
+                email: document.getElementById('email').value,
                 affiliation: document.getElementById('affiliation').value,
                 title: document.getElementById('title').value,
                 articleNumber: document.getElementById('articleNumber').value,
@@ -826,6 +837,7 @@
             
             let publishUrlAction = '';
             let publishWaAction = ''; 
+            let publishEmailAction = '';
             if (journal.process === 'Publish') {
                 if (journal.publishedUrl) {
                     publishUrlAction = `
@@ -834,7 +846,8 @@
                             <button onclick="openPublishUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
                         </div>
                     `;
-                    publishWaAction = `<button onclick="sendPublishInfoViaWhatsApp('${key}')" class="text-blue-500 hover:text-blue-700" title="Kirim Info Artikel Terbit & Pembayaran via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
+                    publishWaAction = `<button onclick="sendPublishInfoViaWhatsApp('${key}')" class="text-blue-500 hover:text-blue-700 ml-2" title="Kirim Info Artikel Terbit via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
+                    publishEmailAction = `<button onclick="sendPublishInfoViaEmail('${key}')" class="text-red-500 hover:text-red-700 ml-1" title="Kirim Info Artikel Terbit via Email"><i class="fas fa-envelope"></i></button>`;
                 } else {
                     publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
                 }
@@ -842,8 +855,10 @@
 
             let loaActionHtml = '';
             let loaWaAction = ''; 
+            let loaEmailAction = '';
             if (journal.loaUrl || journal.invoiceUrl) { 
-                 loaWaAction = `<button onclick="sendLoaInvoiceViaWhatsApp('${key}')" class="text-green-500 hover:text-green-700" title="Kirim Info LoA/Invoice via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
+                 loaWaAction = `<button onclick="sendLoaInvoiceViaWhatsApp('${key}')" class="text-green-500 hover:text-green-700 ml-2" title="Kirim Info LoA/Invoice via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
+                 loaEmailAction = `<button onclick="sendLoaInvoiceViaEmail('${key}')" class="text-red-500 hover:text-red-700 ml-1" title="Kirim Info LoA/Invoice via Email"><i class="fas fa-envelope"></i></button>`;
             }
              if (journal.loaUrl) {
                  loaActionHtml = `
@@ -895,13 +910,15 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div class="flex space-x-2 items-center justify-end">
-                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit Data"><i class="fas fa-edit"></i></button>
+                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900 mr-2" title="Edit Data"><i class="fas fa-edit"></i></button>
                         ${loaActionHtml}
                         ${invoiceActionHtml}
                         ${loaWaAction}
+                        ${loaEmailAction}
                         ${publishUrlAction}
                         ${publishWaAction}
-                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900" title="Hapus"><i class="fas fa-trash"></i></button>
+                        ${publishEmailAction}
+                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900 ml-2" title="Hapus"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             `;
@@ -916,6 +933,7 @@
                 editId.value = id;
                 document.getElementById('editEntryDate').value = journal.entryDate;
                 document.getElementById('editAuthorName').value = journal.authorName;
+                document.getElementById('editEmail').value = journal.email || '';
                 document.getElementById('editAffiliation').value = journal.affiliation;
                 document.getElementById('editTitle').value = journal.title;
                 document.getElementById('editArticleNumber').value = journal.articleNumber || '';
@@ -945,6 +963,7 @@
             const updatedData = {
                 entryDate: document.getElementById('editEntryDate').value,
                 authorName: document.getElementById('editAuthorName').value,
+                email: document.getElementById('editEmail').value,
                 affiliation: document.getElementById('editAffiliation').value,
                 title: document.getElementById('editTitle').value,
                 articleNumber: document.getElementById('editArticleNumber').value,
@@ -1120,6 +1139,94 @@
             const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
             window.open(waUrl, '_blank');
         }
+
+        window.sendLoaInvoiceViaEmail = function(id) {
+            const journal = allJournalsData[id];
+            if (!journal || !journal.email) {
+                alert("Email koresponden tidak ditemukan. Silakan edit data dan tambahkan email.");
+                return;
+            }
+            if (!journal.loaUrl && !journal.invoiceUrl) {
+                alert("URL LoA dan URL Invoice belum ditambahkan.");
+                return;
+            }
+
+            const expectedSender = journal.journalTarget === 'EBISMEN' ? 'ebismenamni@gmail.com' : 'lppm.amni@gmail.com';
+            const fullJournalName = journal.journalTarget === 'EBISMEN' ? 'EBISMEN: Jurnal Ekonomi, Bisnis, dan Manajemen' : `Jurnal ${journal.journalTarget}`;
+            
+            alert(`PENTING:\nPastikan Anda mengirim email ini menggunakan akun:\n\n${expectedSender}\n\nAnda dapat mengganti akun saat tab Gmail terbuka.`);
+
+            const to = journal.email;
+            const subject = `EDITOR DECISION`;
+
+            let body = `Yth. ${journal.authorName},\n\n`;
+            body += `Kami telah menyelesaikan proses penilaian terhadap naskah yang Anda kirimkan ke ${fullJournalName} dengan judul:\n`;
+            body += `"${journal.title}".\n\n`;
+            body += `Berdasarkan hasil evaluasi reviewer dan keputusan dewan editor, dengan ini kami menyampaikan bahwa naskah Anda dinyatakan diterima (Accept Submission) untuk dipublikasikan.\n\n`;
+            
+            if (journal.loaUrl) {
+                body += `Surat Keterangan Penerimaan (Letter of Acceptance/LoA) dapat diakses melalui tautan berikut:\n${journal.loaUrl}\n\n`;
+            }
+
+            if (journal.invoiceUrl) {
+                body += `Invoice dapat diakses melalui tautan berikut:\n${journal.invoiceUrl}\n\n`;
+            }
+
+            if (journal.payment === 'Belum Bayar' && journal.billingTiming === 'Sekarang') {
+                const price = Number(journal.apcAmount || 0).toLocaleString('id-ID');
+                body += `Mohon dapat menyelesaikan administrasi pembayaran sebesar Rp ${price} melalui:\n`;
+                body += `- DANA: 089667747299\n`;
+                body += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n\n`;
+            }
+
+            body += `Mohon konfirmasi pembayaran dengan mengirimkan bukti transfer kepada tim editor setelah transaksi dilakukan.\n\n`;
+            body += `Hormat kami,\nEditor in Chief\n${fullJournalName}`;
+
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(gmailUrl, '_blank');
+        }
+
+        window.sendPublishInfoViaEmail = function(id) {
+            const journal = allJournalsData[id];
+            if (!journal || !journal.email) {
+                alert("Email koresponden tidak ditemukan. Silakan edit data dan tambahkan email.");
+                return;
+            }
+            if (!journal.publishedUrl) {
+                alert("URL Artikel Terbit belum ditambahkan.");
+                return;
+            }
+
+            const expectedSender = journal.journalTarget === 'EBISMEN' ? 'ebismenamni@gmail.com' : 'lppm.amni@gmail.com';
+            const fullJournalName = journal.journalTarget === 'EBISMEN' ? 'EBISMEN: Jurnal Ekonomi, Bisnis, dan Manajemen' : `Jurnal ${journal.journalTarget}`;
+            const volumeStr = journal.volume ? `Volume ${journal.volume}` : '';
+            const issueStr = journal.issueNumber ? `Nomor ${journal.issueNumber}` : '';
+            const volIssue = [volumeStr, issueStr].filter(Boolean).join(' ');
+
+            alert(`PENTING:\nPastikan Anda mengirim email ini menggunakan akun:\n\n${expectedSender}\n\nAnda dapat mengganti akun saat tab Gmail terbuka.`);
+
+            const to = journal.email;
+            const subject = `EDITOR DECISION`;
+
+            let body = `Yth. ${journal.authorName},\n\n`;
+            body += `Kami beritahukan bahwa artikel Anda yang berjudul:\n`;
+            body += `"${journal.title}"\n`;
+            body += `telah resmi diterbitkan pada ${fullJournalName}. ${volIssue}\n\n`;
+            body += `Artikel dapat diakses melalui tautan berikut:\n${journal.publishedUrl}\n\n`;
+
+            if (journal.payment === 'Belum Bayar' && journal.billingTiming === 'Nanti') {
+                const price = Number(journal.apcAmount || 0).toLocaleString('id-ID');
+                body += `Selanjutnya, mohon dapat menyelesaikan administrasi pembayaran sebesar Rp ${price} melalui:\n`;
+                body += `- DANA: 089667747299\n`;
+                body += `- Bank Mandiri: 1360034498730 (a.n Dhanan)\n\n`;
+                body += `Mohon konfirmasi pembayaran dengan mengirimkan bukti transfer kepada tim editor setelah transaksi dilakukan.\n\n`;
+            }
+
+            body += `Hormat kami,\nEditor in Chief\n${fullJournalName}`;
+
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(gmailUrl, '_blank');
+        }
         
         function checkNotificationPermission() {
             const notificationBtn = document.getElementById('notificationBtn');
@@ -1204,7 +1311,6 @@
             updateDeadline(entryDateInput, publicationTypeInput, deadlineInput);
         }
 
-        // Format nomor HP otomatis
         function formatPhoneNumber(e) {
             let val = e.target.value;
             let cleaned = val.replace(/\D/g, '');
