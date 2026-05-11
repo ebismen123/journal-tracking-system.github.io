@@ -841,7 +841,7 @@
             if (journal.process === 'Publish') {
                 if (journal.publishedUrl) {
                     publishUrlAction = `
-                        <div class="inline-flex items-center">
+                        <div class="inline-flex items-center ml-2">
                             <a href="${journal.publishedUrl}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Lihat Artikel Terbit"><i class="fas fa-link"></i></a>
                             <button onclick="openPublishUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Terbit"><i class="fas fa-pencil-alt text-xs"></i></button>
                         </div>
@@ -849,7 +849,7 @@
                     publishWaAction = `<button onclick="sendPublishInfoViaWhatsApp('${key}')" class="text-blue-500 hover:text-blue-700 ml-2" title="Kirim Info Artikel Terbit via WhatsApp"><i class="fab fa-whatsapp"></i></button>`;
                     publishEmailAction = `<button onclick="sendPublishInfoViaEmail('${key}')" class="text-red-500 hover:text-red-700 ml-1" title="Kirim Info Artikel Terbit via Email"><i class="fas fa-envelope"></i></button>`;
                 } else {
-                    publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
+                    publishUrlAction = `<button onclick="openPublishUrlModal('${key}')" class="text-gray-400 hover:text-gray-700 ml-2" title="Masukkan URL Terbit"><i class="fas fa-link"></i></button>`;
                 }
             }
 
@@ -862,25 +862,25 @@
             }
              if (journal.loaUrl) {
                  loaActionHtml = `
-                    <div class="inline-flex items-center">
+                    <div class="inline-flex items-center ml-2">
                         <a href="${journal.loaUrl}" target="_blank" class="text-yellow-600 hover:text-yellow-800" title="Buka URL LoA"><i class="fas fa-award"></i></a>
                         <button onclick="openLoaUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL LoA"><i class="fas fa-pencil-alt text-xs"></i></button>
                     </div>
                 `;
             } else {
-                 loaActionHtml = `<button onclick="openLoaUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL LoA"><i class="fas fa-award"></i></button>`;
+                 loaActionHtml = `<button onclick="openLoaUrlModal('${key}')" class="text-gray-400 hover:text-gray-700 ml-2" title="Tambahkan URL LoA"><i class="fas fa-award"></i></button>`;
             }
 
             let invoiceActionHtml = '';
             if (journal.invoiceUrl) {
                  invoiceActionHtml = `
-                    <div class="inline-flex items-center">
+                    <div class="inline-flex items-center ml-2">
                          <a href="${journal.invoiceUrl}" target="_blank" class="text-green-600 hover:text-green-800" title="Buka URL Invoice"><i class="fas fa-receipt"></i></a>
                          <button onclick="openInvoiceUrlModal('${key}')" class="ml-1 text-gray-500 hover:text-gray-800" title="Edit URL Invoice"><i class="fas fa-pencil-alt text-xs"></i></button>
                     </div>
                 `;
             } else {
-                 invoiceActionHtml = `<button onclick="openInvoiceUrlModal('${key}')" class="text-gray-400 hover:text-gray-700" title="Tambahkan URL Invoice"><i class="fas fa-receipt"></i></button>`;
+                 invoiceActionHtml = `<button onclick="openInvoiceUrlModal('${key}')" class="text-gray-400 hover:text-gray-700 ml-2" title="Tambahkan URL Invoice"><i class="fas fa-receipt"></i></button>`;
             }
 
             row.innerHTML = `
@@ -909,16 +909,22 @@
                     <span class="mt-1 block px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${paymentClass}">${journal.payment}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div class="flex space-x-2 items-center justify-end">
-                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900 mr-2" title="Edit Data"><i class="fas fa-edit"></i></button>
+                    <div class="flex items-center justify-end">
+                        <button onclick="openEditModal('${key}')" class="text-orange-600 hover:text-orange-900" title="Edit Data"><i class="fas fa-edit"></i></button>
+
+                        <button onclick="sendRevisionViaWhatsApp('${key}')" class="text-purple-500 hover:text-purple-700 ml-3" title="Permintaan Revisi (WhatsApp)"><i class="fab fa-whatsapp"></i></button>
+                        <button onclick="sendRevisionViaEmail('${key}')" class="text-purple-500 hover:text-purple-700 ml-1 border-r border-gray-300 pr-3" title="Permintaan Revisi (Email)"><i class="fas fa-envelope"></i></button>
+
                         ${loaActionHtml}
                         ${invoiceActionHtml}
                         ${loaWaAction}
                         ${loaEmailAction}
+
                         ${publishUrlAction}
                         ${publishWaAction}
                         ${publishEmailAction}
-                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900 ml-2" title="Hapus"><i class="fas fa-trash"></i></button>
+
+                        <button onclick="showDeleteConfirm('${key}')" class="text-red-600 hover:text-red-900 ml-3" title="Hapus"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             `;
@@ -1074,6 +1080,53 @@
         cancelPublishUrl.addEventListener('click', () => publishUrlModal.classList.add('hidden'));
         cancelLoaUrl.addEventListener('click', () => loaUrlModal.classList.add('hidden'));
         cancelInvoiceUrl.addEventListener('click', () => invoiceUrlModal.classList.add('hidden'));
+
+        window.sendRevisionViaWhatsApp = function(id) {
+            const journal = allJournalsData[id];
+            if (!journal || !journal.phone) {
+                alert("No HP penulis tidak ditemukan.");
+                return;
+            }
+
+            const phoneNumber = journal.phone;
+            let message = `EDITOR DECISION\n\nYth. ${journal.authorName},\n\n`;
+            message += `Berdasarkan hasil review, naskah Anda yang berjudul "${journal.title}" memerlukan revisi.\n\n`;
+            message += `Mohon segera merevisi naskah sesuai catatan reviewer dan mengirimkannya kembali dalam waktu maksimal 3 hari. `;
+            message += `Apabila Anda membutuhkan tambahan waktu, silakan konfirmasi melalui kontak WhatsApp tim redaksi di 0896 6774 7299.\n\n`;
+            message += `Terima kasih atas kerja samanya.\nTim Editor Jurnal ${journal.journalTarget}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(waUrl, '_blank');
+        }
+
+        window.sendRevisionViaEmail = function(id) {
+            const journal = allJournalsData[id];
+            if (!journal || !journal.email) {
+                alert("Email koresponden tidak ditemukan. Silakan edit data dan tambahkan email.");
+                return;
+            }
+
+            const expectedSender = journal.journalTarget === 'EBISMEN' ? 'ebismenamni@gmail.com' : 'lppm.amni@gmail.com';
+            const fullJournalName = journal.journalTarget === 'EBISMEN' ? 'EBISMEN: Jurnal Ekonomi, Bisnis, dan Manajemen' : `Jurnal ${journal.journalTarget}`;
+            
+            alert(`PENTING:\nPastikan Anda mengirim email ini menggunakan akun:\n\n${expectedSender}\n\nAnda dapat mengganti akun saat tab Gmail terbuka.`);
+
+            const to = journal.email;
+            const subject = `EDITOR DECISION - REVISION REQUIRED`;
+
+            let body = `Yth. ${journal.authorName},\n\n`;
+            body += `Kami telah menyelesaikan proses review terhadap naskah Anda yang dikirimkan ke ${fullJournalName} dengan judul:\n`;
+            body += `"${journal.title}".\n\n`;
+            body += `Berdasarkan hasil evaluasi reviewer, dengan ini kami menyampaikan bahwa naskah Anda memerlukan revisi. `;
+            body += `Mohon segera perbaiki naskah Anda sesuai catatan reviewer dan kirimkan kembali kepada kami dalam waktu maksimal 3 hari ke depan.\n\n`;
+            body += `Apabila Anda membutuhkan tambahan waktu, silakan konfirmasi melalui balasan email ini atau kontak WhatsApp tim redaksi di 0896 6774 7299.\n\n`;
+            body += `Terima kasih atas kerja samanya.\n\n`;
+            body += `Hormat kami,\nTim Editor Jurnal ${journal.journalTarget}`;
+
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(gmailUrl, '_blank');
+        }
 
         window.sendLoaInvoiceViaWhatsApp = function(id) { 
             const journal = allJournalsData[id];
